@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright  2003-2004 The Apache Software Foundation
+ Copyright  2003-2005 The Apache Software Foundation
  
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,56 +14,28 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project default="compile">
+<project default="compile" name="dotnet">
 
-  <target name="setup">
-    <property name="build" value="build"/>
-    <property name="build.classes" value="${build}/classes"/>
-    <property name="build.testclasses" value="${build}/test-classes"/>
-    <property name="build.lib" value="${build}/lib"/>
-    <property name="jarname" value="${build.lib}/dotnet.jar"/>
-    <mkdir dir="${build.classes}"/>
-    <mkdir dir="${build.testclasses}"/>
-    <mkdir dir="${build.lib}"/>
-  </target>
+  <!-- easy way to override properties -->
+  <property file="build.properties"/>
 
-  <target name="compile" depends="setup">
-    <javac 
-      srcdir="src/main"
-      destdir="${build.classes}"
-      debug="true"
-      />
-  </target>
+  <import file="common/build.xml"/>
 
-  <target name="antlib" depends="compile">
-    <copy todir="${build.classes}">
-      <fileset dir="src/main" includes="**/antlib.xml"/>
-    </copy>
-    <jar 
-      destfile="${jarname}"
-      basedir="${build.classes}"
-      />
-  </target>
-
-  <target name="setup-for-tests" depends="setup">
-    <ant 
-      antfile="../../../build.xml" 
-      target="test-jar" 
-      inheritall="false"
-      />
-  </target>
-
-  <target name="compile-tests" depends="setup-for-tests, antlib">
-    <javac 
-      srcdir="src/testcases"
-      destdir="${build.testclasses}"
-      debug="true"
-      >
-      <classpath>
-        <pathelement location="${jarname}"/>
-        <pathelement location="../../../build/lib/ant-testutil.jar"/>
-      </classpath>
-    </javac>
+  <!-- override setup target, make sure this is not Ant 1.7 or later -->
+  <target name="setup" depends="common.setup">
+    <condition property="good-ant-version?">
+      <and>
+        <!-- Ant 1.6.2+ -->
+        <available
+          classname="org.apache.tools.ant.DynamicConfiguratorNS"/>
+        <not>
+          <!-- Ant 1.7+ -->
+          <available
+            classname="org.apache.tools.ant.taskdefs.repository.Libraries"/>
+        </not>
+      </and>
+    </condition>
+    <fail unless="good-ant-version?">This branch must be built using Ant 1.6.x with x &gt;= 2</fail>
   </target>
 
   <target name="test" depends="compile-tests">
@@ -72,11 +44,14 @@
       haltonfailure="false"
       failureproperty="tests.failed"
       filtertrace="false"
+      fork="true"
+      forkmode="once"
       >
       <classpath>
         <pathelement location="${jarname}"/>
-        <pathelement location="../../../build/lib/ant-testutil.jar"/>
+        <pathelement location="${ant-testutil.jar}"/>
         <pathelement location="${build.testclasses}"/>
+        <pathelement location="${ant.home}/lib/ant-nodeps.jar"/>
       </classpath>
 
       <batchtest>
