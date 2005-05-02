@@ -1,5 +1,5 @@
 /*
- * Copyright  2003-2004 The Apache Software Foundation
+ * Copyright 2003-2005 The Apache Software Foundation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,51 +14,52 @@
  *  limitations under the License.
  *
  */
-package org.apache.tools.ant.taskdefs.optional.dotnet;
+package org.apache.ant.dotnet;
 
 import org.apache.tools.ant.BuildFileTest;
 
 /**
- * Tests the NAntTask task.
+ * Tests the DotNetExecTask task, based off Ant's DotnetTest.
+ *
  */
-public class NAntTaskTest extends BuildFileTest {
+public class DotNetExecTaskTest extends BuildFileTest {
 
     /**
      * Description of the Field
      */
     private final static String TASKDEFS_DIR = "src/etc/testcases/";
 
+
     /**
      * Constructor 
      *
      * @param name testname
      */
-    public NAntTaskTest(String name) {
+    public DotNetExecTaskTest(String name) {
         super(name);
     }
+
 
     /**
      * The JUnit setup method
      */
     public void setUp() {
-        configureProject(TASKDEFS_DIR + "nant.xml");
+        configureProject(TASKDEFS_DIR + "dotnetexec.xml");
     }
 
-    public void testEcho() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
-            expectLogContaining("echo", "foo is bar");
-        }
+
+    /**
+     * The teardown method for JUnit
+     */
+    public void tearDown() {
+        executeTarget("teardown");
     }
 
-    public void testNestedFile() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
-            expectLogContaining("nested-file", "foo is bar");
-        }
-    }
 
-    public void testNestedTask() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
-            expectLogContaining("nested-task", "foo is bar");
-        }
+    /**
+     * A unit test for JUnit
+     */
+    public void testCSC() throws Exception {
+        executeTarget("testCSC");
     }
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright  2003-2004 The Apache Software Foundation
+ Copyright 2003-2005 The Apache Software Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,7 +16,7 @@
 -->
 
 <project name="dotnet" basedir="." default="testCSC"
-  xmlns:dn="antlib:org.apache.tools.ant.taskdefs.optional.dotnet">
+  xmlns:dn="antlib:org.apache.ant.dotnet">
 
   <property environment="env"/>
   <property name="build.dir" location="build"/>
@@ -25,14 +25,6 @@
   <property name="out.csc" location="${src.dir}/out.cs"/>
   <property name="out.app" location="${build.dir}/out.exe"/>
   <property name="out.type" value="exe"/>
-
-  <taskdef 
-    uri="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
-    resource="org/apache/tools/ant/taskdefs/optional/dotnet/antlib.xml">
-    <classpath>
-      <pathelement location="../../../build/lib/dotnet.jar"/>
-    </classpath>
-  </taskdef>
 
   <target name="probe_for_apps" >
    <condition property="csc.found">

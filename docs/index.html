@@ -21,12 +21,12 @@
     <h2>Where is it?</h2>
 
     <p>The source code for the library currently lives in the
-    developer sandbox in Ant's CVS - <a
-    href="http://cvs.apache.org/viewcvs.cgi/ant/proposal/sandbox/dotnet/">http://cvs.apache.org/viewcvs.cgi/ant/proposal/sandbox/dotnet/</a>.
+    developer sandbox in Ant's SVN - <a
+    href="http://svn.apache.org/viewcvs.cgi/ant/sandbox/antlibs/dotnet/trunk/">http://svn.apache.org/viewcvs.cgi/ant/sandbox/antlibs/dotnet/trunk/</a>
     A binary can be found at <a
-    href="http://cvs.apache.org/~bodewig/dotnet/dotnet.jar">http://cvs.apache.org/~bodewig/dotnet/dotnet.jar</a>.
+    href="http://people.apache.org/~bodewig/dotnet/dotnet.jar">http://cvs.apache.org/~bodewig/dotnet/dotnet.jar</a>.
     A zip file containing the docs is also <a
-    href="http://cvs.apache.org/~bodewig/dotnet/docs.zip">available</a>.</p>
+    href="http://people.apache.org/~bodewig/dotnet/docs.zip">available</a>.</p>
 
     <p>Note that these are temporary locations and may change later.</p>
 
@@ -49,7 +49,7 @@
       <li>The traditional way:
         <pre>
           &lt;taskdef 
-            resource="org/apache/tools/ant/taskdefs/optional/dotnet/antlib.xml"&gt;
+            resource="org/apache/ant/dotnet/antlib.xml"&gt;
             &lt;classpath&gt;
               &lt;pathelement location="YOUR-PATH-TO/dotnet.jar"/&gt;
             &lt;/classpath&gt;
@@ -65,8 +65,8 @@
       <li>Similar, but assigning a namespace URI
         <pre>
           &lt;taskdef 
-            uri="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
-            resource="org/apache/tools/ant/taskdefs/optional/dotnet/antlib.xml"&gt;
+            uri="antlib:org.apache.ant.dotnet"
+            resource="org/apache/ant/dotnet/antlib.xml"&gt;
             &lt;classpath&gt;
               &lt;pathelement location="YOUR-PATH-TO/dotnet.jar"/&gt;
             &lt;/classpath&gt;
@@ -78,7 +78,7 @@
 
         <pre>
           &lt;project
-            xmlns:dn="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
+            xmlns:dn="antlib:org.apache.ant.dotnet"
             xmlns="antlib:org.apache.tools.ant"&gt;
             ...
             &lt;dn:nant&gt;
@@ -89,7 +89,7 @@
         or
 
         <pre>
-          &lt;nant xmlns="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"&gt;
+          &lt;nant xmlns="antlib:org.apache.ant.dotnet"&gt;
             &lt;target name="my-target"/&gt;
           &lt;/nant&gt;
         </pre>
@@ -105,7 +105,7 @@
 
         <pre>
           &lt;project
-            xmlns:dn="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
+            xmlns:dn="antlib:org.apache.ant.dotnet"
             xmlns="antlib:org.apache.tools.ant"&gt;
         </pre>
 
@@ -137,6 +137,6 @@
     </ul>
 
     <hr/>
-      <p align="center">Copyright &copy; 2003-2004 The Apache Software Foundation. All rights Reserved.</p>
+      <p align="center">Copyright &copy; 2003-2005 The Apache Software Foundation. All rights Reserved.</p>
   </body>
 </html>

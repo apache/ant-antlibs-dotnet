@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright  2003-2004 The Apache Software Foundation
+ Copyright 2003-2005 The Apache Software Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,15 +15,7 @@
   limitations under the License.
 -->
 <project name="msbuild" basedir="." default="echo"
-  xmlns:dn="antlib:org.apache.tools.ant.taskdefs.optional.dotnet">
-
-  <taskdef 
-    uri="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
-    resource="org/apache/tools/ant/taskdefs/optional/dotnet/antlib.xml">
-    <classpath>
-      <pathelement location="../../../build/lib/dotnet.jar"/>
-    </classpath>
-  </taskdef>
+  xmlns:dn="antlib:org.apache.ant.dotnet">
 
   <property environment="env"/>
   <condition property="msbuild.found">
@@ -37,7 +29,7 @@
   <target name="echo">
     <msbuild 
       buildfile="src/msbuild.proj" 
-      xmlns="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
+      xmlns="antlib:org.apache.ant.dotnet"
       >
       <target name="echo"/>
       <property name="foo" value="bar"/>
@@ -47,7 +39,7 @@
   <target name="nested-file">
     <property name="foo" value="bar"/>
     <msbuild 
-      xmlns="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
+      xmlns="antlib:org.apache.ant.dotnet"
       >
       <build>
         <Project DefaultTargets="echo">
@@ -62,7 +54,7 @@
   <target name="nested-task">
     <property name="foo" value="bar"/>
     <msbuild 
-      xmlns="antlib:org.apache.tools.ant.taskdefs.optional.dotnet"
+      xmlns="antlib:org.apache.ant.dotnet"
       >
       <build>
         <Task Name="Echo" Message="foo is ${foo}"/>
