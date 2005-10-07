@@ -242,7 +242,7 @@ public abstract class AbstractBuildTask extends Task {
         File f = null;
         if (buildSnippet != null) {
             Element e = makeTree(buildSnippet.getFragment());
-            f = FileUtils.newFileUtils().createTempFile("build", ".xml", null);
+            f = FileUtils.getFileUtils().createTempFile("build", ".xml", null);
             f.deleteOnExit();
             FileOutputStream out = null;
             try {
