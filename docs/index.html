@@ -15,16 +15,15 @@
 
     <h2>Requirements</h2>
 
-    <p>The current version requires Ant 1.6.2 or later and may even
-    work better for a CVS build of Ant created from CVS HEAD.</p>
+    <p>The current version requires Ant 1.7 or at least a version
+    built from svn trunk no earlier than 2005-12-16.</p>
 
     <h2>Where is it?</h2>
 
-    <p>The source code for the library currently lives in the
-    developer sandbox in Ant's SVN - <a
-    href="http://svn.apache.org/viewcvs.cgi/ant/sandbox/antlibs/dotnet/trunk/">http://svn.apache.org/viewcvs.cgi/ant/sandbox/antlibs/dotnet/trunk/</a>
+    <p>The source code for the library lives in Ant's SVN - <a
+    href="http://svn.apache.org/repos/asf/ant/antlibs/dotnet/trunk/">http://svn.apache.org/repos/asf/ant/antlibs/dotnet/trunk/</a>
     A binary can be found at <a
-    href="http://people.apache.org/~bodewig/dotnet/dotnet.jar">http://cvs.apache.org/~bodewig/dotnet/dotnet.jar</a>.
+    href="http://people.apache.org/~bodewig/dotnet/ant-dotnet.jar">http://cvs.apache.org/~bodewig/dotnet/ant-dotnet.jar</a>.
     A zip file containing the docs is also <a
     href="http://people.apache.org/~bodewig/dotnet/docs.zip">available</a>.</p>
 
@@ -32,15 +31,14 @@
 
     <h2>Feedback</h2>
 
-    <p>Right now direct any feedback either directly to <a
-    href="mailto:bodewig@apache.org">me</a> or the <a
+    <p>Please direct any feedback to the <a
     href="http://ant.apache.org/mail.html#Developer List">Ant
     developer list</a>.
 
     <h2>Installation</h2>
 
     <p>If you are building this from sources, run the antlib target
-    and you'll get a file <code>dotnet.jar</code>.  If you've
+    and you'll get a file <code>ant-dotnet.jar</code>.  If you've
     downloaded <code>dotnet.jar</code>, you are already ready.</p>
 
     <p>There are several ways to use the tasks:</p>
@@ -51,7 +49,7 @@
           &lt;taskdef 
             resource="org/apache/ant/dotnet/antlib.xml"&gt;
             &lt;classpath&gt;
-              &lt;pathelement location="YOUR-PATH-TO/dotnet.jar"/&gt;
+              &lt;pathelement location="YOUR-PATH-TO/ant-dotnet.jar"/&gt;
             &lt;/classpath&gt;
           &lt;/taskdef&gt;
         </pre>
@@ -68,7 +66,7 @@
             uri="antlib:org.apache.ant.dotnet"
             resource="org/apache/ant/dotnet/antlib.xml"&gt;
             &lt;classpath&gt;
-              &lt;pathelement location="YOUR-PATH-TO/dotnet.jar"/&gt;
+              &lt;pathelement location="YOUR-PATH-TO/ant-dotnet.jar"/&gt;
             &lt;/classpath&gt;
           &lt;/taskdef&gt;
         </pre>
@@ -97,7 +95,7 @@
         or a variation thereof.
       </li>
 
-      <li>Using Ant's autodiscovery.  Place <code>dotnet.jar</code>
+      <li>Using Ant's autodiscovery.  Place <code>ant-dotnet.jar</code>
       into a directory and use <code>ant -lib
       DIR-CONTAINING-THE-JAR</code> or copy it into
       <code>ANT_HOME/lib</code> - and then in your build file, simply
@@ -127,7 +125,7 @@
       tool.</li>
 
       <li><a href="msbuild.html">msbuild</a> - execute the MSBuild build
-      tool, untested.</li>
+      tool of Microsoft's .NET framework 2.0.</li>
 
       <li><a href="wix.html">wix</a> - execute the WiX toolset, untested.</li>
 

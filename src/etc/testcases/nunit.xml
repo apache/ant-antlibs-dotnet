@@ -17,14 +17,15 @@
 <project name="nunit" basedir="." default="echo"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
+  <import file="augment-path.xml"/>
+
   <property name="build.dir" value="build"/>
   <property name="src.dir" location="src"/>
 
   <property environment="env"/>
   <condition property="nunit.found">
     <or>
-      <available file="nunit-console.exe" filepath="${env.PATH}"/>
-      <available file="nunit-console.exe" filepath="${env.Path}"/>
+      <available file="nunit-console.exe" filepath="${augmented.PATH}"/>
       <available file="nunit-console.exe"/>
     </or>
   </condition>

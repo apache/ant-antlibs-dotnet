@@ -14,14 +14,13 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project name="nant" basedir="." default="echo"
-  xmlns:dn="antlib:org.apache.ant.dotnet">
+<project name="nant" basedir="." default="echo">
 
-  <property environment="env"/>
+  <import file="augment-path.xml"/>
+
   <condition property="nant.found">
     <or>
-      <available file="NAnt.exe" filepath="${env.PATH}"/>
-      <available file="NAnt.exe" filepath="${env.Path}"/>
+      <available file="NAnt.exe" filepath="${augmented.PATH}"/>
       <available file="NAnt.exe"/>
     </or>
   </condition>

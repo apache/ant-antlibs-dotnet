@@ -247,7 +247,11 @@ public abstract class AbstractBuildTask extends Task {
             FileOutputStream out = null;
             try {
                 out = new FileOutputStream(f);
-                (new DOMElementWriter()).write(e, out);
+                DOMElementWriter w =
+                    new DOMElementWriter(true,
+                                         DOMElementWriter.XmlNamespacePolicy
+                                         .ONLY_QUALIFY_ELEMENTS);
+                w.write(e, out);
             } finally {
                 if (out != null) {
                     out.close();

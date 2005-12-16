@@ -18,7 +18,8 @@
 <project name="dotnet" basedir="." default="testCSC"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
-  <property environment="env"/>
+  <import file="augment-path.xml"/>
+
   <property name="build.dir" location="build"/>
   <property name="src.dir" location="src"/>
 
@@ -27,18 +28,18 @@
   <property name="out.type" value="exe"/>
 
   <target name="probe_for_apps" >
+
    <condition property="csc.found">
       <or>
-        <available file="csc"     filepath="${env.PATH}" />
-        <available file="csc.exe" filepath="${env.PATH}" />
-        <available file="csc.exe" filepath="${env.Path}" />
+        <available file="csc"     filepath="${augmented.PATH}"/>
+        <available file="csc.exe" filepath="${augmented.PATH}"/>
       </or>
     </condition>
    <echo> csc.found=${csc.found}</echo>
 
    <!-- Mono C# compiler -->
    <condition property="mcs.found">
-      <available file="mcs"     filepath="${env.PATH}" />
+      <available file="mcs"     filepath="${augmented.PATH}"/>
     </condition>
    <echo> mcs.found=${mcs.found}</echo>
 

@@ -32,6 +32,9 @@ import org.w3c.dom.NodeList;
 public class MSBuildTask extends AbstractBuildTask {
 
     private static final String TARGET = "generated-by-ant";
+    private static final String ROOT = "Project";
+    private static final String MSBUILD_NS =
+	"http://schemas.microsoft.com/developer/msbuild/2003";
 
     public MSBuildTask() {
         super();
@@ -53,7 +56,7 @@ public class MSBuildTask extends AbstractBuildTask {
 
     protected String[] getTargetArguments(List targets) {
         if (targets.size() > 0) {
-            StringBuffer sb = new StringBuffer("/targets:");
+            StringBuffer sb = new StringBuffer("/target:");
             Iterator iter = targets.iterator();
             boolean first = true;
             while (iter.hasNext()) {
@@ -102,13 +105,15 @@ public class MSBuildTask extends AbstractBuildTask {
         NodeList nl = f.getChildNodes();
         if (nl.getLength() == 1 
             && nl.item(0).getNodeType() == Node.ELEMENT_NODE
-            && nl.item(0).getNodeName().equals("Project")) {
+            && nl.item(0).getNodeName().equals(ROOT)) {
             return (Element) nl.item(0);
         } else {
-            Element p = f.getOwnerDocument().createElement("Project");
+            Element p = f.getOwnerDocument().createElementNS(MSBUILD_NS,
+							     ROOT);
             p.setAttribute("DefaultTargets", TARGET);
 
-            Element t = f.getOwnerDocument().createElement("Target");
+            Element t = f.getOwnerDocument().createElementNS(MSBUILD_NS,
+							     "Target");
             t.setAttribute("Name", TARGET);
 
             p.appendChild(t);

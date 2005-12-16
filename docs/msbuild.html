@@ -9,9 +9,8 @@
 
     <h3>Description</h3>
 
-    <p>Runs the MSBuild build tool presented at the 2003 PDC.  This
-    task is completely untested as the developers have no access to
-    the tool, it has been implemented by looking at the docs only.</p>
+    <p>Runs the MSBuild build tool of Microsoft's .NET framework
+    2.0.</p>
 
     <p>You can either use an existing build file or nest a build file
     (snippet) as a child into the task.  If you don't specify either,
@@ -83,27 +82,28 @@
       &lt;msbuild&gt;
         &lt;target name="echo"&gt;
         &lt;build&gt;
-          &lt;Project DefaultTargets="empty"&gt;
+          &lt;Project DefaultTargets="empty" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
             &lt;Target Name="empty"/&gt;
             &lt;Target Name="echo"&gt;
-              &lt;Task Name="Echo" Message="This is MSBuild"/&gt;
+              &lt;Message Text="This is MSBuild"/&gt;
             &lt;/Target&gt;
           &lt;/Project&gt;
         &lt;/build&gt;
       &lt;/msbuild&gt;
     </pre>
 
-    <p>Run MSBuild's Echo task (if there actually is one):</p>
+    <p>Run MSBuild's Message task:</p>
 
     <pre>
       &lt;msbuild&gt;
         &lt;build&gt;
-          &lt;Task Name="Echo" Message="This is MSBuild"/&gt;
+          &lt;Message Text="This is MSBuild"
+             xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/&gt;
         &lt;/build&gt;
       &lt;/msbuild&gt;
     </pre>
 
     <hr/>
-      <p align="center">Copyright &copy; 2003-2004 The Apache Software Foundation. All rights Reserved.</p>
+      <p align="center">Copyright &copy; 2003-2005 The Apache Software Foundation. All rights Reserved.</p>
   </body>
 </html>

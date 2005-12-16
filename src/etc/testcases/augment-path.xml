@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright  2003-2005 The Apache Software Foundation
+ Copyright 2005 The Apache Software Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,11 +14,14 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<Project DefaultTargets="empty" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-
-  <Target Name="empty"/>
-
-  <Target Name="echo">
-    <Message Text="foo is $(foo)"/>
-  </Target>
-</Project>
+<project>
+  <property environment="env"/>
+  <path id="augmented-PATH">
+    <pathelement location="${framework.path}"/>
+    <pathelement location="${nunit.path}"/>
+    <pathelement location="${nant.path}"/>
+    <pathelement path="${env.PATH}"/>
+    <pathelement path="${env.Path}"/>
+  </path>
+  <property name="augmented.PATH" refid="augmented-PATH"/>
+</project>
