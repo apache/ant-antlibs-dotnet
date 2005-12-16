@@ -9,13 +9,19 @@
 
     <h3>Description</h3>
 
-    <p>Runs the MSBuild build tool presented at the 2003 PDC.  This
-    task is completely untested as the developers have no access to
-    the tool, it has been implemented by looking at the docs only.</p>
+    <p>Runs the MSBuild build tool of Microsoft's .NET framework
+    2.0.</p>
 
-    <p>You can either use an existing build file or nest a build file
-    (snippet) as a child into the task.  If you don't specify either,
-    MSBuild's default build file search algorithm will apply.</p>
+    <p>Unlike the nant task, this task doesn't support nested build
+    files.  MSBuild requires a certain default namespace and there is
+    no easy way to write an XML file of that type within Ant 1.6.x -
+    without repeating code that is already present in Ant 1.7 or some
+    ugly hacks, that is.  Use the Ant 1.7+ version of this antlib and
+    Ant 1.7+ if you want nested build file snippets, alternatively use
+    the echo task to write the build file (see example below).</p>
+
+    <p>If you don't specify a build file, MSBuild's default build file
+    search algorithm will apply.</p>
 
     <h3>Parameters</h3>
     <table border="1" cellpadding="2" cellspacing="0">
@@ -50,13 +56,6 @@
     value that specify name and value of a property that is to be
     defined in the MSBuild invocation.</p>
 
-    <h4>build</h4>
-
-    <p>This element allows no attributes.  You can nest a MSBuild build
-    file into it and MSBuild will be executed on that.  You can also nest
-    a build file snippet instead and Ant will wrap the necessary MSBuild
-    <code>&lt;Project&gt; around it.</code></p>
-
     <h3>Examples</h3>
 
     <p>Let MSBuild search for a *.proj file in the (Ant) project's base
@@ -76,34 +75,24 @@
       &lt;/msbuild&gt;
     </pre>
 
-    <p>Define a build file embeded into the task, let MSBuild execute the
-    echo target of that build file.</p>
+    <p>Define a build file embeded into an Ant build file, let MSBuild
+    execute the echo target of that build file.</p>
 
     <pre>
-      &lt;msbuild&gt;
-        &lt;target name="echo"&gt;
-        &lt;build&gt;
-          &lt;Project DefaultTargets="empty"&gt;
-            &lt;Target Name="empty"/&gt;
-            &lt;Target Name="echo"&gt;
-              &lt;Task Name="Echo" Message="This is MSBuild"/&gt;
-            &lt;/Target&gt;
-          &lt;/Project&gt;
-        &lt;/build&gt;
-      &lt;/msbuild&gt;
-    </pre>
-
-    <p>Run MSBuild's Echo task (if there actually is one):</p>
-
-    <pre>
-      &lt;msbuild&gt;
-        &lt;build&gt;
-          &lt;Task Name="Echo" Message="This is MSBuild"/&gt;
-        &lt;/build&gt;
-      &lt;/msbuild&gt;
+      &lt;tempfile property="ms.proj" suffix=".proj"/&gt;
+      &lt;echo file="${ms.proj}"&gt;&lt;![CDATA[
+        &lt;Project DefaultTargets="echo" xmlns="http://schemas.microsoft.com/developer/msbuild/2003"&gt;
+          &lt;Target Name="echo"&gt;
+            &lt;Message Text="This is MSBuild"/&gt;
+          &lt;/Target&gt;
+        &lt;/Project&gt;]]&gt;&lt;/echo&gt;
+      &lt;msbuild buildfile="${ms.proj}"
+        xmlns="antlib:org.apache.ant.dotnet"
+        /&gt;
+      &lt;delete file="${ms.proj}"/&gt;
     </pre>
 
     <hr/>
-      <p align="center">Copyright &copy; 2003-2004 The Apache Software Foundation. All rights Reserved.</p>
+      <p align="center">Copyright &copy; 2003-2005 The Apache Software Foundation. All rights Reserved.</p>
   </body>
 </html>

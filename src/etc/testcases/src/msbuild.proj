@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!--
- Copyright  2003-2004 The Apache Software Foundation
+ Copyright  2003-2005 The Apache Software Foundation
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -14,11 +14,11 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<Project DefaultTargets="empty">
+<Project DefaultTargets="empty" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
   <Target Name="empty"/>
 
   <Target Name="echo">
-    <Task Name="Echo" Message="foo is ${foo}"/>
+    <Message Text="foo is $(foo)"/>
   </Target>
 </Project>

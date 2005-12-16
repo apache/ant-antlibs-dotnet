@@ -56,9 +56,4 @@ public class MSBuildTaskTest extends BuildFileTest {
         }
     }
 
-    public void testNestedTask() throws Exception {
-        if (getProject().getProperty("msbuild.found") != null) {
-            expectLogContaining("nested-task", "foo is bar");
-        }
-    }
 }

@@ -22,6 +22,7 @@ import java.util.Iterator;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.tools.ant.BuildException;
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -54,7 +55,7 @@ public class MSBuildTask extends AbstractBuildTask {
 
     protected String[] getTargetArguments(List targets) {
         if (targets.size() > 0) {
-            StringBuffer sb = new StringBuffer("/targets:");
+            StringBuffer sb = new StringBuffer("/target:");
             Iterator iter = targets.iterator();
             boolean first = true;
             while (iter.hasNext()) {
@@ -100,21 +101,9 @@ public class MSBuildTask extends AbstractBuildTask {
      * Otherwise, fail.</p>
      */
     protected Element makeTree(DocumentFragment f) {
-        NodeList nl = f.getChildNodes();
-        if (nl.getLength() == 1 
-            && nl.item(0).getNodeType() == Node.ELEMENT_NODE
-            && nl.item(0).getNodeName().equals("Project")) {
-            return (Element) nl.item(0);
-        } else {
-            Element p = f.getOwnerDocument().createElement("Project");
-            p.setAttribute("DefaultTargets", TARGET);
-
-            Element t = f.getOwnerDocument().createElement("Target");
-            t.setAttribute("Name", TARGET);
-
-            p.appendChild(t);
-            t.appendChild(f);
-            return p;
-        }
+        throw new BuildException("MSBuild requires build files to have"
+                                 + " a certain default namespace, which"
+                                 + " cannot be achieved with Ant prior to"
+                                 + " Ant 1.7.");
     }
 }
