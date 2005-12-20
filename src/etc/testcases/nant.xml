@@ -14,7 +14,8 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 -->
-<project name="nant" basedir="." default="echo">
+<project name="nant" basedir="." default="echo"
+  xmlns:dn="antlib:org.apache.ant.dotnet">
 
   <import file="augment-path.xml"/>
 
@@ -26,38 +27,33 @@
   </condition>
 
   <target name="echo">
-    <nant 
+    <dn:nant 
       buildfile="src/nant.build" 
-      xmlns="antlib:org.apache.ant.dotnet"
       >
-      <target name="echo"/>
-      <property name="foo" value="bar"/>
-    </nant>
+      <dn:target name="echo"/>
+      <dn:property name="foo" value="bar"/>
+    </dn:nant>
   </target>
 
   <target name="nested-file">
     <property name="foo" value="bar"/>
-    <nant
-      xmlns="antlib:org.apache.ant.dotnet"
-      >
-      <build>
+    <dn:nant>
+      <dn:build>
         <project basedir="." default="echo">
           <target name="echo">
             <echo message="foo is ${foo}"/>
           </target>
         </project>
-      </build>
-    </nant>
+      </dn:build>
+    </dn:nant>
   </target>
 
   <target name="nested-task">
     <property name="foo" value="bar"/>
-    <nant
-      xmlns="antlib:org.apache.ant.dotnet"
-      >
-      <build>
+    <dn:nant>
+      <dn:build>
         <echo message="foo is ${foo}"/>
-      </build>
-    </nant>
+      </dn:build>
+    </dn:nant>
   </target>
 </project>
