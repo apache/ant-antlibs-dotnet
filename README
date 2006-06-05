@@ -1,10 +1,5 @@
-dotnet sandbox README
-=====================
-
-Author:
--------
-
-Stefan Bodewig, but feel free to go ahead and modify to your liking.
+dotnet README
+=============
 
 Goal:
 -----
@@ -34,5 +29,3 @@ Short term goals are:
 
 * A <nunit> task.
 
-Those tasks should end up in an antlib of their own in order to be
-distributable independent of Ant.
