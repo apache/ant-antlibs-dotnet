@@ -15,8 +15,10 @@
  *
  */
 
-package org.apache.ant.dotnet;
+package org.apache.ant.dotnet.wix;
 
+import org.apache.ant.dotnet.DotNetExecTask;
+import org.apache.ant.dotnet.build.AbstractBuildTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;

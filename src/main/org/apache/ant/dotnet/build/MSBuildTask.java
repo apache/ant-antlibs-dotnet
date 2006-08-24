@@ -15,7 +15,7 @@
  *
  */
 
-package org.apache.ant.dotnet;
+package org.apache.ant.dotnet.build;
 
 import java.io.File;
 import java.util.Iterator;

@@ -1,5 +1,5 @@
 /*
- * Copyright 2003-2005 The Apache Software Foundation
+ * Copyright 2003-2006 The Apache Software Foundation
  *
  *  Licensed under the Apache License, Version 2.0 (the "License");
  *  you may not use this file except in compliance with the License.
@@ -14,14 +14,14 @@
  *  limitations under the License.
  *
  */
-package org.apache.ant.dotnet;
+package org.apache.ant.dotnet.build;
 
 import org.apache.tools.ant.BuildFileTest;
 
 /**
- * Tests the NAntTask task.
+ * Tests the MSBuildTask task.
  */
-public class NAntTaskTest extends BuildFileTest {
+public class MSBuildTaskTest extends BuildFileTest {
 
     /**
      * Description of the Field
@@ -33,7 +33,7 @@ public class NAntTaskTest extends BuildFileTest {
      *
      * @param name testname
      */
-    public NAntTaskTest(String name) {
+    public MSBuildTaskTest(String name) {
         super(name);
     }
 
@@ -41,23 +41,23 @@ public class NAntTaskTest extends BuildFileTest {
      * The JUnit setup method
      */
     public void setUp() {
-        configureProject(TASKDEFS_DIR + "nant.xml");
+        configureProject(TASKDEFS_DIR + "msbuild.xml");
     }
 
     public void testEcho() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
+        if (getProject().getProperty("msbuild.found") != null) {
             expectLogContaining("echo", "foo is bar");
         }
     }
 
     public void testNestedFile() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
+        if (getProject().getProperty("msbuild.found") != null) {
             expectLogContaining("nested-file", "foo is bar");
         }
     }
 
     public void testNestedTask() throws Exception {
-        if (getProject().getProperty("nant.found") != null) {
+        if (getProject().getProperty("msbuild.found") != null) {
             expectLogContaining("nested-task", "foo is bar");
         }
     }
