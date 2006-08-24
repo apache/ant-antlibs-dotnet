@@ -35,4 +35,25 @@
     name="nunit"
     classname="org.apache.ant.dotnet.NUnitTask"
     />
+  <taskdef
+    name="csc"
+    classname="org.apache.ant.dotnet.compile.CSharp"/>
+  <taskdef
+    name="jsharpc"
+    classname="org.apache.ant.dotnet.compile.JSharp"/>
+  <taskdef
+    name="vbc"
+    classname="org.apache.ant.dotnet.compile.VisualBasicCompile"/>
+  <taskdef
+    name="ildasm"
+    classname="org.apache.ant.dotnet.Ildasm"/>
+  <taskdef
+    name="ilasm"
+    classname="org.apache.ant.dotnet.compile.Ilasm"/>
+  <taskdef
+    name="wsdltodotnet"
+    classname="org.apache.ant.dotnet.compile.WsdlToDotnet"/>
+  <taskdef
+    name="importtypelib"
+    classname="org.apache.ant.dotnet.ImportTypelib"/>
 </antlib>
