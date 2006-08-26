@@ -21,11 +21,11 @@
 
   <import file="common/build.xml"/>
 
-  <target name="test" depends="compile-tests">
+  <target name="junit-test" depends="compile-tests">
     <junit
       printsummary="false"
       haltonfailure="false"
-      failureproperty="tests.failed"
+      failureproperty="junit.tests.failed"
       filtertrace="false"
       fork="true"
       forkmode="once"
@@ -38,12 +38,10 @@
       </classpath>
 
       <batchtest>
-        <fileset dir="src/testcases"/>
+        <fileset dir="${src.junit}"/>
       </batchtest>
 
       <formatter type="plain" usefile="false"/>
     </junit>
-
-    <fail if="tests.failed">At least one test has failed.</fail>
   </target>
 </project>
