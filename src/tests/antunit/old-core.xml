@@ -1,7 +1,9 @@
 <?xml version="1.0"?>
 
 <project name="dotnet" basedir="." default="init"
-  xmlns:dn="antlib:org.apache.ant.dotnet">
+  xmlns:dn="antlib:org.apache.ant.dotnet"
+  xmlns:au="antlib:org.apache.ant.antunit">
+
   <property environment="env"/>
   <property name="build.dir" location="build"/>
   <property name="src.dir" location="src"/>
@@ -113,7 +115,7 @@
     <mkdir dir="${build.dir}"/>
   </target>
 
-  <target name="teardown">
+  <target name="tearDown">
     <delete dir="${build.dir}"/>
   </target>
 
@@ -130,9 +132,9 @@
   </target>
 
 
-  <target name="testCSC" depends="testCSC-Mono,testCSC-MS"/>
+  <target name="testCSC" depends="CSC-Mono,CSC-MS"/>
 
-  <target name="testCSC-MS" depends="validate_csc" if="csc.found">
+  <target name="CSC-MS" depends="validate_csc" if="csc.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe" />
     <dn:csc
@@ -141,13 +143,12 @@
       srcDir="${src.dir}"
       >
     </dn:csc>
-    <available property="app.created" file="${testCSC.exe}"/>
-    <fail unless="app.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSC.exe}"/>
     <exec executable="${testCSC.exe}" failonerror="true" />
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="testCSC-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSC-Mono" depends="validate_csc" if="mcs.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe" />
     <dn:csc
@@ -157,17 +158,16 @@
       srcDir="${src.dir}"
       >
     </dn:csc>
-    <available property="app.created" file="${testCSC.exe}"/>
-    <fail unless="app.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSC.exe}"/>
     <exec executable="${mono.executable}" failonerror="true">
       <arg value="${testCSC.exe}"/>
     </exec>
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="testCSCResources" depends="testCSCResources-Mono,testCSCResources-MS"/>
+  <target name="testCSCResources" depends="CSCResources-Mono,CSCResources-MS"/>
 
-  <target name="testCSCResources-MS" depends="validate_csc" if="csc.found">
+  <target name="CSCResources-MS" depends="validate_csc" if="csc.found">
     <property name="testCSCRes.exe"
       location="${build.dir}/ExampleCscRes.exe" />
     <dn:csc
@@ -177,8 +177,7 @@
       >
       <resource file="${src.dir}/res.resources"/>
     </dn:csc>
-    <available property="app-res.created" file="${testCSCRes.exe}"/>
-    <fail unless="app-res.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSCRes.exe}"/>
     <exec executable="${testCSCRes.exe}" failonerror="true" />
     <delete file="${testCSCRes.exe}"/>
     <dn:csc
@@ -190,13 +189,12 @@
         <fileset file="${src.dir}/res.resources"/>
       </resource>
     </dn:csc>
-    <available property="app-res-2.created" file="${testCSCRes.exe}"/>
-    <fail unless="app-res-2.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSCRes.exe}"/>
     <exec executable="${testCSCRes.exe}" failonerror="true" />
     <delete file="${testCSCRes.exe}"/>
   </target>
 
-  <target name="testCSCResources-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCResources-Mono" depends="validate_csc" if="mcs.found">
     <property name="testCSCRes.exe"
       location="${build.dir}/ExampleCscRes.exe" />
     <dn:csc
@@ -207,8 +205,7 @@
       >
       <resource file="${src.dir}/res.resources"/>
     </dn:csc>
-    <available property="app-res.created" file="${testCSCRes.exe}"/>
-    <fail unless="app-res.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSCRes.exe}"/>
     <exec executable="${mono.executable}" failonerror="true">
       <arg value="${testCSCRes.exe}"/>
     </exec>
@@ -216,9 +213,9 @@
   </target>
 
   <target name="testCSCintrinsicFileset"
-          depends="testCSCintrinsicFileset-MS,testCSCintrinsicFileset-Mono"/>
+          depends="CSCintrinsicFileset-MS,CSCintrinsicFileset-Mono"/>
 
-  <target name="testCSCintrinsicFileset-MS" depends="validate_csc" if="csc.found">
+  <target name="CSCintrinsicFileset-MS" depends="validate_csc" if="csc.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe"/>
     <dn:csc
@@ -228,13 +225,12 @@
       includes="**/*.cs"
       >
     </dn:csc>
-    <available property="app.created" file="${testCSC.exe}"/>
-    <fail unless="app.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSC.exe}"/>
     <exec executable="${testCSC.exe}" failonerror="true" />
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="testCSCintrinsicFileset-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCintrinsicFileset-Mono" depends="validate_csc" if="mcs.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe"/>
     <dn:csc
@@ -245,17 +241,16 @@
       includedefaultreferences="true"
       >
     </dn:csc>
-    <available property="app.created" file="${testCSC.exe}"/>
-    <fail unless="app.created">No app ${testCSC.exe} created</fail>
+    <au:assertFileExists file="${testCSC.exe}"/>
     <exec executable="${mono.executable}" failonerror="true">
       <arg value="${testCSC.exe}"/>
     </exec>
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="testCSCdll" depends="testCSCdll-MS,testCSCdll-Mono"/>
+  <target name="testCSCdll" depends="CSCdll-MS,CSCdll-Mono"/>
 
-  <target name="testCSCdll-MS" depends="validate_csc" if="csc.found">
+  <target name="CSCdll-MS" depends="validate_csc" if="csc.found">
     <property name="testCSC.dll"
       location="${build.dir}/Example2.dll" />
     <dn:csc
@@ -265,8 +260,7 @@
       >
       <src dir="${src.dir}" includes="example2.cs"/>
     </dn:csc>
-    <available property="dll.created" file="${testCSC.dll}"/>
-    <fail unless="dll.created">No file ${testCSC.dll} created</fail>
+    <au:assertFileExists file="${testCSC.dll}"/>
     <property name="testCSC2.dll"
       location="${build.dir}/folder  with dir/Example3.dll" />
     <mkdir dir="${build.dir}/folder  with dir"/>
@@ -277,11 +271,10 @@
       >
       <src dir="${src.dir}" includes="example3.cs"/>
     </dn:csc>
-    <available property="dll2.created" file="${testCSC2.dll}"/>
-    <fail unless="dll2.created">No file ${testCSC2.dll} created</fail>
+    <au:assertFileExists file="${testCSC2.dll}"/>
   </target>
 
-  <target name="testCSCdll-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCdll-Mono" depends="validate_csc" if="mcs.found">
     <property name="testCSC.dll"
       location="${build.dir}/Example2.dll" />
     <dn:csc
@@ -291,14 +284,13 @@
       >
       <src dir="${src.dir}" includes="example2.cs"/>
     </dn:csc>
-    <available property="dll.created" file="${testCSC.dll}"/>
-    <fail unless="dll.created">No file ${testCSC.dll} created</fail>
+    <au:assertFileExists file="${testCSC.dll}"/>
   </target>
 
-  <target name="testCscReferences"
-    depends="testCscReferences-MS,testCscReferences-Mono"/>
+  <target name="CscReferences"
+    depends="CscReferences-MS,CscReferences-Mono"/>
 
-  <target name="testCscReferences-MS" depends="validate_csc,testCSCdll-MS"
+  <target name="CscReferences-MS" depends="validate_csc,CSCdll-MS"
           if="csc.found">
     <property name="testCscReferences.exe"
       location="${build.dir}/ExampleCsc2.exe" />
@@ -313,13 +305,12 @@
       <define name="DEBUG" if="undefined.property"/>
       <define name="def3" unless="undefined.property"/>
     </dn:csc>
-    <available property="refapp.created" file="${testCscReferences.exe}"/>
-    <fail unless="refapp.created">No app ${testCscReferences.exe} created</fail>
+    <au:assertFileExists file="${testCscReferences.exe}"/>
     <copy file="${testCSC2.dll}" todir="${build.dir}"/>
     <exec executable="${testCscReferences.exe}" failonerror="true" />
   </target>
 
-  <target name="testCscReferences-Mono" depends="validate_csc,testCSCdll-Mono"
+  <target name="CscReferences-Mono" depends="validate_csc,CSCdll-Mono"
           if="mcs.found">
     <property name="testCscReferences.exe"
       location="${build.dir}/ExampleCsc2.exe" />
@@ -334,15 +325,16 @@
       <define name="DEBUG" if="undefined.property"/>
       <define name="def3" unless="undefined.property"/>
     </dn:csc>
-    <available property="refapp.created" file="${testCscReferences.exe}"/>
-    <fail unless="refapp.created">No app ${testCscReferences.exe} created</fail>
+    <au:assertFileExists file="${testCscReferences.exe}"/>
     <exec executable="${mono.executable}" failonerror="true">
       <arg value="${testCscReferences.exe}"/>
     </exec>
   </target>
 
+  <target name="ILASM-deps" depends="ILASM-Mono,ILASM-MS"/>
+
   <target name="testILASM"
-    depends="testILASM-Mono,testILASM-MS"
+    depends="ILASM-deps"
     if="ilasm.found"/>
 
   <target name="ilasm" depends="validate_ilasm"
@@ -355,27 +347,26 @@
       >
       <src dir="${src.dir}" includes="*.il"/>
     </dn:ilasm>
-    <available property="ilasm.created" file="${testILASM.exe}"/>
-    <fail unless="ilasm.created">No app ${testILASM.exe} created</fail>
+    <au:assertFileExists file="${testILASM.exe}"/>
   </target>
 
-    <target name="testILASM-MS" depends="ilasm"
-      if="ilasm.found" unless="mono.ilasm.found">
-      <exec executable="${testILASM.exe}"
-        failonerror="true"/>
-    </target>
+  <target name="ILASM-MS" depends="ilasm"
+    if="ilasm.found" unless="mono.ilasm.found">
+    <exec executable="${testILASM.exe}"
+      failonerror="true"/>
+  </target>
 
-    <target name="testILASM-Mono" depends="ilasm"
-      if="mono.ilasm.found">
-      <exec executable="${mono.executable}"
-        failonerror="true">
-        <arg value="${testILASM.exe}"/>
-      </exec>
-    </target>
+  <target name="ILASM-Mono" depends="ilasm"
+    if="mono.ilasm.found">
+    <exec executable="${mono.executable}"
+      failonerror="true">
+      <arg value="${testILASM.exe}"/>
+    </exec>
+  </target>
 
   <!-- not including this in the test as it creates an exe in the src dir -->
 
-  <target name="testIlasmNoDestFile"  depends="validate_ilasm">
+  <target name="XtestIlasmNoDestFile"  depends="validate_ilasm">
     <dn:ilasm
       targetType="exe"
       >
@@ -390,7 +381,7 @@
     <echo>${ilasm.string}</echo>
   </target>
 
-  <target name="testILDASM"   depends="testILASM" if="ildasm.found">
+  <target name="testILDASM"   depends="ILASM-deps" if="ildasm.found">
     <property name="testILDASM.il"
       location="${build.dir}/ExampleIldasm.il" />
     <dn:ildasm
@@ -401,16 +392,17 @@
       linenumbers="true"
       encoding="ascii"
       />
-    <available property="ildasm.created" file="${testILDASM.il}"/>
-    <fail unless="ildasm.created">No file ${testILDASM.il} created</fail>
+    <au:assertFileExists file="${testILDASM.il}"/>
   </target>
 
   <!-- this is an error -->
   <target name="testILDASM_empty"   depends="validate_ilasm" >
-    <dn:ildasm/>
+    <au:expectfailure>
+      <dn:ildasm/>
+    </au:expectfailure>
   </target>
 
-  <target name="jsharp" depends="init" if="jsharp.found" >
+  <target name="testJsharp" depends="init" if="jsharp.found" >
     <property name="jsharp.exe"
       location="${build.dir}/jsharp.exe" />
     <dn:jsharpc
@@ -433,8 +425,7 @@
       srcDir="${src.dir}"
       >
     </dn:csc>
-    <available property="app.created" file="${testCSCresponseFile.exe}"/>
-    <fail unless="app.created">No app ${testCSCresponseFile.exe} created</fail>
+    <au:assertFileExists file="${testCSCresponseFile.exe}"/>
     <delete file="${testCSCresponseFile.exe}"/>
   </target>
 
