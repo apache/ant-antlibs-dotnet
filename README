@@ -1,31 +1,36 @@
-dotnet README
-=============
+What's this?
+============
 
-Goal:
------
+This library doesn't strive to replace NAnt or MSBuild, its main
+purpose is to help those of us who work on projects crossing platform
+boundaries. With this library you can use Ant to build and test the
+Java as well as the .NET parts of your project.
 
-Provide a simple infrastructure to execute .NET applications from
-within Ant for different VMs so that the user doesn't have to change
-the build file when she wants to run Mono on Linux and Microsoft's VM
-on Windows.
+Learn more
+==========
 
-This sounds far more ambitioned than it actually is.
+The documentation is included in the docs subdirectory of this
+distribution.  The home of this library is
+<http://ant.apache.org/antlibs/dotnet/index.html>.
 
-Short term goals are:
+Building
+========
 
-* A <dotnetexec> task that can be used as
+This Ant Library requires Ant 1.7.0 to build, some of the test use
+JUnit 3 (3.8.2 recommended), others use the sister Antlib AntUnit (see
+<http://ant.apache.org/antlibs/antunit/index.html>).
 
-  <dotnetexec executable="ExampleCsc.exe"/>
+It should work with any Java(TM) Runtime (and compile with any Java(TM)
+Developer Kit) starting with version 1.2.
 
-  without testing for the environment (see the dotnet.xml build file
-  for Ant's tests as an example for what may become simpler with
-  this).
+It should support the Microsoft .NET framework in versions 1.1 and 2.0
+and Mono in various versions on various platforms.
 
-* A <nant> task.
+Using
+=====
 
-* A <msbuild> task - if only for the fun of having it.
+You use this Ant library like any other Ant library 8-)
 
-* A <wix> task.
-
-* A <nunit> task.
-
+In short you can make it available to Ant in a variety of ways, please
+see the Ant manual or the index.html file in the docs subdirectory of
+this distribtion for details.
