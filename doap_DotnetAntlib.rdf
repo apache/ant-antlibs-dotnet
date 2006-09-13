@@ -21,11 +21,11 @@
          xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
          xmlns:asfext="http://projects.apache.org/ns/asfext#">
   <Project rdf:about="http://ant.apache.org/antlibs/dotnet/">
-    <created>2006-02-17</created>
+    <created>2006-09-13</created>
     <license rdf:resource="http://usefulinc.com/doap/licenses/asl20" />
     <name>Apache .NET Ant Library</name>
     <homepage rdf:resource="http://ant.apache.org/antlibs/dotnet/" />
-    <asfext:pmc rdf:resource="http://ant.apache.org/antlibs/dotnet/" />
+    <asfext:pmc rdf:resource="http://ant.apache.org/" />
     <shortdesc>Support for Mono and Microsoft .NET development using Ant</shortdesc>
     <description>This is a library of Ant tasks that help developing
 .NET software.  It includes the "old" .NET tasks like a C# compiler task but also comes with support for NUnit testing or running the popular NAnt or MSBuild build tools.</description>
@@ -36,9 +36,9 @@
     <category rdf:resource="http://projects.apache.org/category/build-management" />
     <release>
       <Version>
-        <name>Apache .NET Ant Library 1.0.0 Beta 1</name>
-        <created>2006-09-??</created>
-        <revision>1.0.0beta1</revision>
+        <name>Apache .NET Ant Library 1.0 Beta 1</name>
+        <created>2006-09-13</created>
+        <revision>1.0Beta1</revision>
       </Version>
     </release>
     <repository>
