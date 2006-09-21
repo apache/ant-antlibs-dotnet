@@ -20,6 +20,7 @@ package org.apache.ant.dotnet;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecTask;
 import org.apache.tools.ant.taskdefs.condition.Os;
 import org.apache.tools.ant.types.Environment;
@@ -49,6 +50,13 @@ public class DotNetExecTask extends ExecTask {
     private String vm = Os.isFamily("windows") ? MS_VM : "mono";
 
     /**
+     * Name of property to set if execution fails.
+     *
+     * @since 1.0 Beta 2
+     */
+    private String errorProperty;
+
+    /**
      * Empty Constructor.
      */
     public DotNetExecTask() {
@@ -75,6 +83,19 @@ public class DotNetExecTask extends ExecTask {
     }
 
     /**
+     * Sets the name of the property to set if execution fails.
+     *
+     * <p>Not exposed as an attribute of the task, it just supports
+     * tasks like &lt;nunit&gt; which delegate to instances of this
+     * class.</p>
+     *
+     * @since 1.0 Beta 2
+     */
+    public void internalSetErrorProperty(String name) {
+        errorProperty = name;
+    }
+
+    /**
      * Do the work.
      *
      * @throws BuildException if executable is empty or &lt;exec&gt;
@@ -86,6 +107,19 @@ public class DotNetExecTask extends ExecTask {
         }
         setupCommandline();
         super.execute();
+    }
+
+    /**
+     * Overridden to support the error-property handling required by
+     * NUnit, NAnt and friends.
+     *
+     * @since 1.0 Beta 2
+     */
+    protected void maybeSetResultPropertyValue(int result) {
+        if (errorProperty != null && Execute.isFailure(result)) {
+            getProject().setNewProperty(errorProperty, String.valueOf(true));
+        }
+        super.maybeSetResultPropertyValue(result);
     }
 
     /**

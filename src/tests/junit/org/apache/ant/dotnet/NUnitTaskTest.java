@@ -61,6 +61,7 @@ public class NUnitTaskTest extends BuildFileTest {
         if (getProject().getProperty("nunit.found") != null) {
             expectLogContaining("passing-test", 
                                 "Tests run: 1, Failures: 0, Not run: 0");
+            assertNull(getProject().getProperty("nunit.failed"));
         }
     }
 
@@ -74,6 +75,12 @@ public class NUnitTaskTest extends BuildFileTest {
     public void testFailOnFail() {
         if (getProject().getProperty("nunit.found") != null) {
             expectBuildException("failing-test-with-fail", "test should fail");
+        }
+    }
+
+    public void testFailWithErrorProperty() {
+        if (getProject().getProperty("nunit.found") != null) {
+            expectPropertySet("failing-test-errorproperty", "nunit.failed");
         }
     }
 

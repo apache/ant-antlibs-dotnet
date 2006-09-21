@@ -110,6 +110,13 @@ public class NUnitTask extends Task {
     private boolean failOnError = false;
 
     /**
+     * Name of property to set if a test fails.
+     *
+     * @since 1.0 Beta 2
+     */
+    private String errorProperty;
+
+    /**
      * Support for nested environment variables.
      */
     private Environment env = new Environment();
@@ -195,6 +202,15 @@ public class NUnitTask extends Task {
      */
     public void setFailOnError(boolean b) {
         failOnError = b;
+    }
+
+    /**
+     * Name of property to set if a test fails.
+     *
+     * @since 1.0 Beta 2
+     */
+    public void setErrorProperty(String name) {
+        errorProperty = name;
     }
 
     /**
@@ -324,6 +340,7 @@ public class NUnitTask extends Task {
             exec.addConfiguredRedirector(redirectorElement);
         }
         exec.setFailonerror(failOnError);
+        exec.internalSetErrorProperty(errorProperty);
 
         exec.execute();
     }

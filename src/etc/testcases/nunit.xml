@@ -52,7 +52,7 @@
   </target>
 
   <target name="passing-test" depends="compile-pass">
-    <dn:nunit>
+    <dn:nunit errorProperty="nunit.failed">
       <testassembly name="${build.dir}/Pass.dll"/>
     </dn:nunit>
   </target>
@@ -65,6 +65,12 @@
 
   <target name="failing-test-with-fail" depends="compile-fail">
     <dn:nunit failonerror="true">
+      <testassembly name="${build.dir}/Fail.dll"/>
+    </dn:nunit>
+  </target>
+
+  <target name="failing-test-errorproperty" depends="compile-fail">
+    <dn:nunit errorProperty="nunit.failed">
       <testassembly name="${build.dir}/Fail.dll"/>
     </dn:nunit>
   </target>
