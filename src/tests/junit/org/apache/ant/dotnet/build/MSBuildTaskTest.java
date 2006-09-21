@@ -60,6 +60,25 @@ public class MSBuildTaskTest extends BuildFileTest {
     public void testNestedTask() throws Exception {
         if (getProject().getProperty("msbuild.found") != null) {
             expectLogContaining("nested-task", "foo is bar");
+            assertNull(getProject().getProperty("msbuild.failed"));
+        }
+    }
+
+    public void testFail() throws Exception {
+        if (getProject().getProperty("msbuild.found") != null) {
+            expectBuildException("fail", "Msbuild should fail");
+        }
+    }
+
+    public void testHiddenFail() {
+        if (getProject().getProperty("msbuild.found") != null) {
+            executeTarget("hidden-failure");
+        }
+    }
+
+    public void testHiddenFailWithProperty() {
+        if (getProject().getProperty("msbuild.found") != null) {
+            expectPropertySet("hidden-failure-property", "msbuild.failed");
         }
     }
 }

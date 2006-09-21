@@ -49,10 +49,37 @@
 
   <target name="nested-task">
     <property name="foo" value="bar"/>
-    <dn:msbuild>
+    <dn:msbuild errorProperty="msbuild.failed">
       <dn:build>
         <Message Text="foo is ${foo}"
                  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
+      </dn:build>
+    </dn:msbuild>
+  </target>
+
+  <target name="fail">
+    <dn:msbuild>
+      <dn:build>
+        <Error Text="Failed"
+          xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
+      </dn:build>
+    </dn:msbuild>
+  </target>
+
+  <target name="hidden-failure">
+    <dn:msbuild failOnError="false">
+      <dn:build>
+        <Error Text="Failed"
+          xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
+      </dn:build>
+    </dn:msbuild>
+  </target>
+
+  <target name="hidden-failure-property">
+    <dn:msbuild failOnError="false" errorProperty="msbuild.failed">
+      <dn:build>
+        <Error Text="Failed"
+          xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
       </dn:build>
     </dn:msbuild>
   </target>

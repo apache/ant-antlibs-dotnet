@@ -60,6 +60,25 @@ public class NAntTaskTest extends BuildFileTest {
     public void testNestedTask() throws Exception {
         if (getProject().getProperty("nant.found") != null) {
             expectLogContaining("nested-task", "foo is bar");
+            assertNull(getProject().getProperty("nant.failed"));
+        }
+    }
+
+    public void testFail() throws Exception {
+        if (getProject().getProperty("nant.found") != null) {
+            expectBuildException("fail", "NAnt should fail");
+        }
+    }
+
+    public void testHiddenFail() {
+        if (getProject().getProperty("nant.found") != null) {
+            executeTarget("hidden-failure");
+        }
+    }
+
+    public void testHiddenFailWithProperty() {
+        if (getProject().getProperty("nant.found") != null) {
+            expectPropertySet("hidden-failure-property", "nant.failed");
         }
     }
 }

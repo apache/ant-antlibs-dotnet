@@ -51,9 +51,33 @@
 
   <target name="nested-task">
     <property name="foo" value="bar"/>
-    <dn:nant>
+    <dn:nant errorProperty="nant.failed">
       <dn:build>
         <echo message="foo is ${foo}"/>
+      </dn:build>
+    </dn:nant>
+  </target>
+
+  <target name="fail">
+    <dn:nant>
+      <dn:build>
+        <fail message="Failed"/>
+      </dn:build>
+    </dn:nant>
+  </target>
+
+  <target name="hidden-failure">
+    <dn:nant failOnError="false">
+      <dn:build>
+        <fail message="Failed"/>
+      </dn:build>
+    </dn:nant>
+  </target>
+
+  <target name="hidden-failure-property">
+    <dn:nant failOnError="false" errorProperty="nant.failed">
+      <dn:build>
+        <fail message="Failed"/>
       </dn:build>
     </dn:nant>
   </target>

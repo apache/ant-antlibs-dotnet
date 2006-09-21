@@ -65,6 +65,20 @@ public abstract class AbstractBuildTask extends Task {
     private String vm;
 
     /**
+     * Whether a failure should stop the build.
+     *
+     * @since 1.0 Beta 2
+     */
+    private boolean failOnError = true;
+
+    /**
+     * Name of property to set if a build fails.
+     *
+     * @since 1.0 Beta 2
+     */
+    private String errorProperty;
+
+    /**
      * Empty constructor.
      */
     protected AbstractBuildTask() {
@@ -155,6 +169,24 @@ public abstract class AbstractBuildTask extends Task {
     }
 
     /**
+     * Whether a failure should stop the build.
+     *
+     * @since 1.0 Beta 2
+     */
+    public void setFailOnError(boolean b) {
+        failOnError = b;
+    }
+
+    /**
+     * Name of property to set if a build fails.
+     *
+     * @since 1.0 Beta 2
+     */
+    public void setErrorProperty(String name) {
+        errorProperty = name;
+    }
+
+    /**
      * Must return the executable.
      *
      * @return must not return null
@@ -230,6 +262,8 @@ public abstract class AbstractBuildTask extends Task {
         for (int i = 0; i < args.length; i++) {
             exec.createArg().setValue(args[i]);
         }
+        exec.setFailonerror(failOnError);
+        exec.internalSetErrorProperty(errorProperty);
 
         try {
             exec.execute();
