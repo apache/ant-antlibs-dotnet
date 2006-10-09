@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <project name="wsdl-to-java-jtest" basedir="." default="init"
+  xmlns:au="antlib:org.apache.ant.antunit"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
   <property environment="env"/>
@@ -22,14 +23,14 @@
   <property name="vb.references" 
     value="System.Web.dll,System.xml.dll,System.dll,System.Web.Services.dll"/>
     
-  <target name="init" depends="validate">
+  <target name="setUp" depends="validate">
     <mkdir dir="${build.dir}"/>
     <mkdir dir="${cache.dir}"/>
     <mkdir dir="${src.dir}"/>
     <mkdir dir="${classes.dir}"/>
   </target>
   
-  <target name="probe_for_apps" >
+  <target name="probe_for_apps">
    <condition property="wsdl.found">
       <or>
         <available file="wsdl"     filepath="${env.PATH}" />
@@ -62,68 +63,91 @@
       </and>
     </condition>
    <echo> dotnetapps.found=${dotnetapps.found}</echo>
+   <condition property="is.mono">
+      <and>
+        <available file="mcs"     filepath="${env.PATH}" />
+        <not>
+          <available file="csc.exe"     filepath="${env.PATH}" />
+        </not>
+      </and>
+    </condition>
   </target>
   
-  <target name="teardown">
+  <target name="tearDown">
     <delete dir="${build.dir}"/>
   </target>  
 
-  <target name="validate" depends="probe_for_apps" >
+  <target name="validate" depends="probe_for_apps">
     <fail unless="dotnetapps.found">Needed .net apps are missing</fail>
   </target>  
   
   
   <target name="testNoParams">
-    <dn:wsdltodotnet/>
+    <au:expectfailure message="no dest file">
+      <dn:wsdltodotnet/>
+    </au:expectfailure>
   </target>
 
   <target name="testNoSrc">
-    <dn:wsdltodotnet destFile="${out.csc}"/>
+    <au:expectfailure message="no source file">
+      <dn:wsdltodotnet destFile="${out.csc}"/>
+    </au:expectfailure>
   </target>
 
-  <target name="testDestIsDir" depends="init">
+  <target name="testDestIsDir">
+    <au:expectfailure message="dest is a directory">
     <dn:wsdltodotnet destFile="${build.dir}"
       srcFile="${local.wsdl}"/>
+    </au:expectfailure>
   </target>
   
-  <target name="testBothSrc" depends="init">
+  <target name="testBothSrc">
+    <au:expectfailure message="can only have one source">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       url="${endpoint.wsdl}"
       />
+    </au:expectfailure>
   </target>
 
-  <target name="testSrcIsDir" depends="init">
+  <target name="testSrcIsDir">
+    <au:expectfailure message="source is a directory">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${build.dir}"
       />
+    </au:expectfailure>
   </target>
 
-  <target name="testSrcIsMissing" depends="init">
+  <target name="testSrcIsMissing">
+    <au:expectfailure message="source file is not present">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${build.dir}/invalidfile.wsdl"
       />
+    </au:expectfailure>
   </target>
   
-  <target name="testLocalWsdl" depends="init">
+  <target name="testLocalWsdl">
+    <au:assertFileDoesntExist file="${out.csc}"/>
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       />
+    <au:assertFileExists file="${out.csc}"/>
     <dn:csc 
       srcDir="${src.dir}"
       destFile="${out.app}"
       targetType="${out.type}"
       references="System.Web.Services.dll"
       />
-    <available property="app.created" file="${out.app}"/>
-    <fail unless="app.created">No app created</fail>
+    <au:assertFileExists file="${out.app}"/>
   </target>
   
-  <target name="testLocalWsdlServer" depends="init">
+  <target name="testLocalWsdlServer">
+    <au:assertFileDoesntExist file="${out.csc}"/>
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       server="true"
       />
+    <au:assertFileExists file="${out.csc}"/>
     <dn:csc 
       srcDir="${src.dir}"
       destFile="${out.app}"
@@ -131,24 +155,25 @@
       fileAlign="512"
       references="System.Web.Services.dll"
       />
-    <available property="app.created" file="${out.app}"/>
-    <fail unless="app.created">No app created</fail>
+    <au:assertFileExists file="${out.app}"/>
   </target>
   
-  <target name="testInvalidExtraOps" depends="init">
+  <target name="testInvalidExtraOps" unless="is.mono">
+    <au:expectfailure message="extra options are unknown to wsdl.exe">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       extraOptions="/newOption:not-one-known-of"
       />
+    </au:expectfailure>
   </target>
 
-
-  
-  <target name="testLocalWsdlVB" depends="init" if="vbc.found">
+  <target name="testLocalWsdlVB" if="vbc.found">
+    <au:assertFileDoesntExist file="${out.vbc}"/>
     <dn:wsdltodotnet destFile="${out.vbc}"
       language="VB"
       srcFile="${local.wsdl}"
       />
+    <au:assertFileExists file="${out.vbc}"/>
     <dn:vbc 
       srcDir="${src.dir}"
       destFile="${out.app}"
@@ -157,17 +182,18 @@
       >
       
       </dn:vbc>
-    <available property="app.created" file="${out.app}"/>
-    <fail unless="app.created">No app created</fail>
+    <au:assertFileExists file="${out.app}"/>
   </target>
   
   <target name="testLocalWsdlServerVB" 
-    depends="init" if="vbc.found">
+     if="vbc.found">
+    <au:assertFileDoesntExist file="${out.vbc}"/>
     <dn:wsdltodotnet destFile="${out.vbc}"
       language="VB"
       srcFile="${local.wsdl}"
       server="true"
       />
+    <au:assertFileExists file="${out.vbc}"/>
     <dn:vbc 
       srcDir="${src.dir}"
       destFile="${out.app}"
@@ -177,50 +203,49 @@
       optionCompare="text"
       references="${vb.references}"
       />
-    <available property="app.created" file="${out.app}"/>
-    <fail unless="app.created">No app created</fail>
+    <au:assertFileExists file="${out.app}"/>
   </target>
   
-  <target name="testInvalidExtraOpsVB" depends="init">
+  <target name="testInvalidExtraOpsVB" unless="is.mono">
+    <au:expectfailure message="extra options are unknown to wsdl.exe">
     <dn:wsdltodotnet destFile="${out.vbc}"
       language="VB"
       srcFile="${local.wsdl}"
       extraOptions="/newOption:not-one-known-of"
       />
+    </au:expectfailure>
   </target>
 
 
-  <target name="testideErrorsIgnoredWhenFalse" depends="init">
-    <dn:wsdltodotnet destFile="${out.csc}"
-      srcFile="${local.wsdl}"
-      ideErrors="false"
-      >
-    </dn:wsdltodotnet>
-  </target>
-
-  <target name="testSchemaMustBeSet" depends="init">
+  <target name="testSchemaMustBeSet">
+    <au:expectfailure message="schema hasn't been set">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       >
       <schema/>
     </dn:wsdltodotnet>
+    </au:expectfailure>
   </target>
 
-  <target name="testSchemaFileMustExist" depends="init">
+  <target name="testSchemaFileMustExist">
+    <au:expectfailure message="schema doesn't exist">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       >
       <schema file="this-file-does-not-exist.xsd"/>
     </dn:wsdltodotnet>
+    </au:expectfailure>
   </target>
 
-  <target name="testSchemaFileMustHaveOneOptionOnly" depends="init">
+  <target name="testSchemaFileMustHaveOneOptionOnly">
+    <au:expectfailure message="can't have file and url on schema">
     <dn:wsdltodotnet destFile="${out.csc}"
       srcFile="${local.wsdl}"
       >
       <schema file="WsdlToDotnet.xml"
         url="http://ant.apache.org/xml/AntSchema.xsd"/>
     </dn:wsdltodotnet>
+    </au:expectfailure>
   </target>
 
 </project>
