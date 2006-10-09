@@ -109,6 +109,12 @@
       <isset property="mcs.found"/>
    </condition>
 
+    <condition property="ms.net20+">
+      <or>
+        <available file="aspnet_compiler.exe" filepath="${env.PATH}"/>
+        <available file="aspnet_compiler.exe" filepath="${env.Path}"/>
+      </or>
+    </condition>
   </target>
 
   <target name="init" depends="probe_for_apps">
@@ -381,7 +387,8 @@
     <echo>${ilasm.string}</echo>
   </target>
 
-  <target name="testILDASM"   depends="ILASM-deps" if="ildasm.found">
+  <target name="testILDASM"   depends="ILASM-deps" if="ildasm.found"
+    unless="ms.net20+">
     <property name="testILDASM.il"
       location="${build.dir}/ExampleIldasm.il" />
     <dn:ildasm
