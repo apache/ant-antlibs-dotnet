@@ -57,7 +57,7 @@
     <property name="foo2" value="xyzzy"/>
     <dn:msbuild errorProperty="msbuild.failed1">
       <dn:build>
-        <Message Text="foo is ${foo}"
+        <Message Text="foo is ${foo2}"
                  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
       </dn:build>
     </dn:msbuild>
