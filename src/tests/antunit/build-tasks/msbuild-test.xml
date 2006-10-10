@@ -16,25 +16,30 @@
   limitations under the License.
 -->
 <project name="msbuild" basedir="." default="echo"
+  xmlns:au="antlib:org.apache.ant.antunit"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
-  <import file="augment-path.xml"/>
+  <import file="../augment-path.xml"/>
+
+  <target name="setUp">
   <condition property="msbuild.found">
     <or>
       <available file="MSBuild.exe" filepath="${augmented.PATH}"/>
       <available file="MSBuild.exe"/>
     </or>
   </condition>
+  </target>
 
-  <target name="echo">
+  <target name="test-echo" if="msbuild.found">
     <dn:msbuild buildfile="src/msbuild.proj">
       <dn:target name="echo"/>
       <dn:property name="foo" value="bar"/>
     </dn:msbuild>
+    <au:assertLogContains text="foo is bar"/>
   </target>
 
-  <target name="nested-file">
-    <property name="foo" value="bar"/>
+  <target name="test-nested-file" if="msbuild.found">
+    <property name="foo" value="baz"/>
     <dn:msbuild>
       <dn:build>
         <Project DefaultTargets="echo"
@@ -45,28 +50,35 @@
         </Project>
       </dn:build>
     </dn:msbuild>
+    <au:assertLogContains text="foo is baz"/>
   </target>
 
-  <target name="nested-task">
-    <property name="foo" value="bar"/>
-    <dn:msbuild errorProperty="msbuild.failed">
+  <target name="test-nested-task" if="msbuild.found">
+    <property name="foo2" value="xyzzy"/>
+    <dn:msbuild errorProperty="msbuild.failed1">
       <dn:build>
         <Message Text="foo is ${foo}"
                  xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
       </dn:build>
     </dn:msbuild>
+    <au:assertLogContains text="foo is xyzzy"/>
+    <au:assertFalse message="no failure">
+      <isset property="msbuild.failed1"/>
+    </au:assertFalse>
   </target>
 
-  <target name="fail">
+  <target name="test-fail" if="msbuild.found">
+    <au:expectfailure message="MSBuild should fail">
     <dn:msbuild>
       <dn:build>
         <Error Text="Failed"
           xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
       </dn:build>
     </dn:msbuild>
+    </au:expectfailure>
   </target>
 
-  <target name="hidden-failure">
+  <target name="test-hidden-failure" if="msbuild.found">
     <dn:msbuild failOnError="false">
       <dn:build>
         <Error Text="Failed"
@@ -75,13 +87,14 @@
     </dn:msbuild>
   </target>
 
-  <target name="hidden-failure-property">
+  <target name="test-hidden-failure-property" if="msbuild.found">
     <dn:msbuild failOnError="false" errorProperty="msbuild.failed">
       <dn:build>
         <Error Text="Failed"
           xmlns="http://schemas.microsoft.com/developer/msbuild/2003"/>
       </dn:build>
     </dn:msbuild>
+    <au:assertPropertySet name="msbuild.failed"/>
   </target>
 
 </project>

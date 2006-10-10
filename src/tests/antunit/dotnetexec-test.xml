@@ -17,6 +17,7 @@
 -->
 
 <project name="dotnet" basedir="." default="testCSC"
+  xmlns:au="antlib:org.apache.ant.antunit"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
   <import file="augment-path.xml"/>
@@ -27,6 +28,7 @@
   <property name="out.csc" location="${src.dir}/out.cs"/>
   <property name="out.app" location="${build.dir}/out.exe"/>
   <property name="out.type" value="exe"/>
+  <property name="testCSC.exe" location="${build.dir}/ExampleCsc.exe" />
 
   <target name="probe_for_apps" >
 
@@ -53,30 +55,27 @@
    </condition>
   </target>
 
-  <target name="init" depends="probe_for_apps">
+  <target name="setUp" depends="probe_for_apps">
     <mkdir dir="${build.dir}"/>
-    <property name="testCSC.exe"
-      location="${build.dir}/ExampleCsc.exe" />
   </target>
 
-  <target name="teardown">
+  <target name="tearDown">
     <delete dir="${build.dir}"/>
   </target>
 
-  <target name="validate_csc" depends="init">
+  <target name="validate_csc">
     <fail unless="c#.found">Needed C# compiler is missing</fail>
   </target>
 
   <target name="testCSC" depends="validate_csc">
-    <csc
+    <au:assertFileDoesntExist file="${testCSC.exe}"/>
+    <dn:csc
       destFile="${testCSC.exe}"
       targetType="exe">
       <src dir="${src.dir}" includes="ex*.cs"/>
-    </csc>
-    <available property="app.created" file="${testCSC.exe}"/>
-    <fail unless="app.created">No app ${testCSC.exe} created</fail>
+    </dn:csc>
+    <au:assertFileExists file="${testCSC.exe}"/>
     <dn:dotnetexec executable="${testCSC.exe}" failonerror="true" />
-    <delete file="${testCSC.exe}"/>
   </target>
 
 </project>

@@ -16,28 +16,32 @@
   limitations under the License.
 -->
 <project name="nant" basedir="." default="echo"
+  xmlns:au="antlib:org.apache.ant.antunit"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
-  <import file="augment-path.xml"/>
+  <import file="../augment-path.xml"/>
 
+  <target name="setUp">
   <condition property="nant.found">
     <or>
       <available file="NAnt.exe" filepath="${augmented.PATH}"/>
       <available file="NAnt.exe"/>
     </or>
   </condition>
+  </target>
 
-  <target name="echo">
+  <target name="test-echo" if="nant.found">
     <dn:nant 
       buildfile="src/nant.build" 
       >
       <dn:target name="echo"/>
       <dn:property name="foo" value="bar"/>
     </dn:nant>
+    <au:assertLogContains text="foo is bar"/>
   </target>
 
-  <target name="nested-file">
-    <property name="foo" value="bar"/>
+  <target name="test-nested-file" if="nant.found">
+    <property name="foo" value="baz"/>
     <dn:nant>
       <dn:build>
         <project basedir="." default="echo">
@@ -47,26 +51,33 @@
         </project>
       </dn:build>
     </dn:nant>
+    <au:assertLogContains text="foo is baz"/>
   </target>
 
-  <target name="nested-task">
-    <property name="foo" value="bar"/>
-    <dn:nant errorProperty="nant.failed">
+  <target name="test-nested-task" if="nant.found">
+    <property name="foo2" value="xyzzy"/>
+    <dn:nant errorProperty="nant.failed1">
       <dn:build>
-        <echo message="foo is ${foo}"/>
+        <echo message="foo is ${foo2}"/>
       </dn:build>
     </dn:nant>
+    <au:assertLogContains text="foo is xyzzy"/>
+    <au:assertFalse message="no failure">
+      <isset property="nant.failed1"/>
+    </au:assertFalse>
   </target>
 
-  <target name="fail">
+  <target name="test-fail" if="nant.found">
+    <au:expectfailure message="NAnt should fail">
     <dn:nant>
       <dn:build>
         <fail message="Failed"/>
       </dn:build>
     </dn:nant>
+    </au:expectfailure>
   </target>
 
-  <target name="hidden-failure">
+  <target name="test-hidden-failure" if="nant.found">
     <dn:nant failOnError="false">
       <dn:build>
         <fail message="Failed"/>
@@ -74,11 +85,12 @@
     </dn:nant>
   </target>
 
-  <target name="hidden-failure-property">
+  <target name="test-hidden-failure-property" if="nant.found">
     <dn:nant failOnError="false" errorProperty="nant.failed">
       <dn:build>
         <fail message="Failed"/>
       </dn:build>
     </dn:nant>
+    <au:assertPropertySet name="nant.failed"/>
   </target>
 </project>

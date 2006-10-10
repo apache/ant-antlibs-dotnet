@@ -16,66 +16,86 @@
   limitations under the License.
 -->
 <project name="nunit" basedir="." default="echo"
+  xmlns:au="antlib:org.apache.ant.antunit"
   xmlns:dn="antlib:org.apache.ant.dotnet">
 
-  <import file="augment-path.xml"/>
+  <import file="../augment-path.xml"/>
 
   <property name="build.dir" value="build"/>
   <property name="src.dir" location="src"/>
 
-  <property environment="env"/>
+  <target name="setUp">
   <condition property="nunit.found">
     <or>
       <available file="nunit-console.exe" filepath="${augmented.PATH}"/>
       <available file="nunit-console.exe"/>
     </or>
   </condition>
+    <mkdir dir="${build.dir}"/>
+  </target>
 
-  <target name="no-assembly">
+  <target name="test-no-assembly">
+    <au:expectfailure message="test assembly is required">
     <dn:nunit/>
+    </au:expectfailure>
   </target>
 
-  <target name="compile-pass">
-    <mkdir dir="${build.dir}"/>
-    <csc destFile="${build.dir}/Pass.dll"
-      targetType="library" references="nunit.framework.dll">
+  <target name="find-NUnit" if="nunit.found">
+    <whichresource resource="/nunit.framework.dll" property="nunit"
+      classpath="${augmented.PATH}"/>
+  </target>
+
+  <target name="extract-NUnit" depends="find-NUnit" if="nunit">
+    <pathconvert property="nunit.framework.dll">
+      <map from="file:///" to="/"/>
+      <map from="file:/" to=""/>
+      <url url="${nunit}"/>
+    </pathconvert>
+  </target>
+
+  <target name="compile-pass" if="nunit" depends="extract-NUnit">
+    <dn:csc destFile="${build.dir}/Pass.dll"
+      targetType="library" references="${nunit.framework.dll}">
       <src dir="${src.dir}" includes="pass.cs"/>
-    </csc>
+    </dn:csc>
   </target>
 
-  <target name="compile-fail">
-    <mkdir dir="${build.dir}"/>
-    <csc destFile="${build.dir}/Fail.dll" 
-      targetType="library" references="nunit.framework.dll">
+  <target name="compile-fail" if="nunit" depends="extract-NUnit">
+    <dn:csc destFile="${build.dir}/Fail.dll" 
+      targetType="library" references="${nunit.framework.dll}">
       <src dir="${src.dir}" includes="fail.cs"/>
-    </csc>
+    </dn:csc>
   </target>
 
-  <target name="passing-test" depends="compile-pass">
+  <target name="test-passing" depends="compile-pass" if="nunit.found">
     <dn:nunit errorProperty="nunit.failed">
       <testassembly name="${build.dir}/Pass.dll"/>
     </dn:nunit>
   </target>
 
-  <target name="failing-test" depends="compile-fail">
+  <target name="test-failing" depends="compile-fail" if="nunit.found">
     <dn:nunit>
       <testassembly name="${build.dir}/Fail.dll"/>
     </dn:nunit>
   </target>
 
-  <target name="failing-test-with-fail" depends="compile-fail">
+  <target name="test-failing-with-fail" depends="compile-fail" if="nunit.found">
+    <au:expectfailure>
     <dn:nunit failonerror="true">
       <testassembly name="${build.dir}/Fail.dll"/>
     </dn:nunit>
+    </au:expectfailure>
   </target>
 
-  <target name="failing-test-errorproperty" depends="compile-fail">
+  <target name="test-failing-errorproperty" depends="compile-fail">
     <dn:nunit errorProperty="nunit.failed">
       <testassembly name="${build.dir}/Fail.dll"/>
     </dn:nunit>
+    <au:assertPropertySet name="nunit.failed"/>
   </target>
 
-  <target name="teardown">
+  <target name="tearDown">
     <delete dir="${build.dir}"/>
+    <delete file="TestResult.xml" quiet="true"/>
   </target>
 </project>
