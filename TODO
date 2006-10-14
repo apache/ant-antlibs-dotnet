@@ -1,9 +1,5 @@
 Things to do before the beta can become a final release:
 
-* make dotnetexec tests independent of the "old" tasks, i.e. make the tests self-contained
-
 * test in a wider variety of platforms
-
-* AntUnitize more tests
 
 * make docs a little bit more accessible

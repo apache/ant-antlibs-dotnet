@@ -22,27 +22,4 @@
 
   <import file="common/build.xml"/>
 
-  <target name="junit-test" depends="compile-tests">
-    <junit
-      printsummary="false"
-      haltonfailure="false"
-      failureproperty="junit.tests.failed"
-      filtertrace="false"
-      fork="true"
-      forkmode="once"
-      >
-      <classpath>
-        <pathelement location="${jarname}"/>
-        <pathelement location="${ant-testutil.jar}"/>
-        <pathelement location="${build.testclasses}"/>
-        <pathelement location="${ant.home}/lib/ant-nodeps.jar"/>
-      </classpath>
-
-      <batchtest>
-        <fileset dir="${src.junit}"/>
-      </batchtest>
-
-      <formatter type="plain" usefile="false"/>
-    </junit>
-  </target>
 </project>
