@@ -16,8 +16,8 @@ distribution.  The home of this library is
 Building
 ========
 
-This Ant Library requires Ant 1.7.0 to build, some of the test use
-JUnit 3 (3.8.2 recommended), others use the sister Antlib AntUnit (see
+This Ant Library requires Ant 1.7.0 to build, the tests use the sister
+Antlib AntUnit (see
 <http://ant.apache.org/antlibs/antunit/index.html>).
 
 It should work with any Java(TM) Runtime (and compile with any Java(TM)

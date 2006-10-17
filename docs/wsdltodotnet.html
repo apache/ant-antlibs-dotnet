@@ -84,6 +84,10 @@
         <td valign="top" align="left">
           Any extra WSDL.EXE options which aren't explicitly supported
           by the ant wrapper task; optional
+          <br><b>Note:</b> Some versions of Mono's wsdl.exe will
+          silently ignore any options it doesn't know when you start
+          the option with "/", it will fail on unknown options if you
+          use "-" instead.
         </td>
         <td valign="top" align="left">
           String

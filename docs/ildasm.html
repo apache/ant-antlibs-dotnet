@@ -50,7 +50,10 @@
     path. To disassemble using alternate CLR systems, set the
     executable attribute to the name/path of the alternate
     implementation -one that must support all the classic ildasm
-    commands. </p>
+    commands. <b>Note:</b> the ildasm executable of version 2.0 of
+    Microsoft's .NET SDK seems to be broken as it always failed during
+    tests (couldn't find the assembly's metadata) even for assemblies
+    built completely independent of Ant.</p>
 
     <p>Dependency logic: the task executes the command if the output
     file is missing or older than the source file. It does not take
