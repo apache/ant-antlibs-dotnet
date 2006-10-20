@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE document
+[
+<!ELEMENT document (properties?, release+)>
+<!ELEMENT properties (title)>
+<!ELEMENT title (#PCDATA)>
+<!ELEMENT release (action+)>
+<!ELEMENT action (#PCDATA)>
+<!ATTLIST release
+          version CDATA #REQUIRED
+          date CDATA #REQUIRED
+          description CDATA #IMPLIED>
+<!ATTLIST action
+          issue CDATA #IMPLIED
+          type (add|fix|remove|update) #REQUIRED
+          breaks-bwc (true|false) #IMPLIED>
+]
+>
+  <document>
+    <properties>
+      <title>Apache .NET Ant Library</title>
+    </properties>
+
+    <release version="SVN trunk" date="unpublished">
+      <action type="update" issue="40553">
+        The NAnt and MSBuild task have new attributes failonerror and
+        errorproperty that allow users to fine-tune Ant's behaviour if
+        either of both signals an error.
+      </action>
+
+      <action type="update" issue="40552">
+        The NUnit task has a new attribute errorproperty that allows
+        users to set a property if NUnit signals a test failure.
+      </action>
+    </release>
+  </document>
