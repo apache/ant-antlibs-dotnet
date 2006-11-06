@@ -4,7 +4,7 @@
 <!ELEMENT document (properties?, release+)>
 <!ELEMENT properties (title)>
 <!ELEMENT title (#PCDATA)>
-<!ELEMENT release (action+)>
+<!ELEMENT release (action*)>
 <!ELEMENT action (#PCDATA)>
 <!ATTLIST release
           version CDATA #REQUIRED
@@ -22,6 +22,9 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+    </release>
+
+    <release version="1.0" date="2006-11-06">
       <action type="update" issue="40553">
         The NAnt and MSBuild task have new attributes failonerror and
         errorproperty that allow users to fine-tune Ant's behaviour if
