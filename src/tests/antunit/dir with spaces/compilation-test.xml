@@ -135,4 +135,46 @@
     <au:assertFileExists file="${testIlasm.exe}"/>
   </target>
 
+  <target name="testCSCResponseFile" depends="probe_for_apps" if="csc.found">
+    <property name="testCSC.exe"
+      location="${dest.dir}/ExampleCsc.exe" />
+    <au:assertFileDoesntExist file="${testCSC.exe}"/>
+    <dn:csc
+      destFile="${testCSC.exe}"
+      targetType="exe"
+      srcDir="${source.dir}"
+      useResponseFile="true"
+      >
+    </dn:csc>
+    <au:assertFileExists file="${testCSC.exe}"/>
+  </target>
+
+  <target name="testJSharpcResponseFile" depends="probe_for_apps" if="jsharp.found">
+    <property name="testJSharp.exe"
+      location="${dest.dir}/jsharp.exe" />
+    <au:assertFileDoesntExist file="${testJSharp.exe}"/>
+    <dn:jsharpc
+      destFile="${testJSharp.exe}"
+      targetType="exe"
+      useResponseFile="true"
+      >
+      <src dir="${source.dir}" includes="*.java"/>
+    </dn:jsharpc>
+    <au:assertFileExists file="${testJSharp.exe}"/>
+  </target>
+
+  <target name="testVBCResponseFile" depends="probe_for_apps" if="vbc.found">
+    <property name="testVBC.exe"
+      location="${dest.dir}/ExampleVbc.exe" />
+    <au:assertFileDoesntExist file="${testVBC.exe}"/>
+    <dn:vbc
+      destFile="${testVBC.exe}"
+      targetType="exe"
+      srcDir="${source.dir}"
+      useResponseFile="true"
+      >
+    </dn:vbc>
+    <au:assertFileExists file="${testVBC.exe}"/>
+  </target>
+
 </project>
