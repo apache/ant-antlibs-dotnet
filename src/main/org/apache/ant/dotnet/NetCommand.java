@@ -42,6 +42,7 @@ import org.apache.tools.ant.util.FileUtils;
 import org.apache.tools.ant.taskdefs.Execute;
 import org.apache.tools.ant.taskdefs.ExecuteStreamHandler;
 import org.apache.tools.ant.taskdefs.LogStreamHandler;
+import org.apache.tools.ant.taskdefs.condition.Os;
 import org.apache.tools.ant.types.Commandline;
 
 /**
@@ -57,6 +58,12 @@ import org.apache.tools.ant.types.Commandline;
 public class NetCommand {
 
     private static final FileUtils FILE_UTILS = FileUtils.getFileUtils();
+
+    private static final boolean IS_WINDOWS;
+
+    static {
+        IS_WINDOWS = Os.isFamily("windows");
+    }
 
     /**
      *  owner project
@@ -351,7 +358,14 @@ public class NetCommand {
                 PrintWriter out = new PrintWriter(new BufferedOutputStream(fos));
                 //start at 1 because element 0 is the executable name
                 for (int i = 1; i < commands.length; ++i) {
-                    out.println(commands[i]);
+                    if (IS_WINDOWS && commands[i].indexOf(" ") > -1) {
+                        String q = commands[i].indexOf("\"") > -1 ? "'" : "\"";
+                        out.print(q);
+                        out.print(commands[i]);
+                        out.println(q);
+                    } else {
+                        out.println(commands[i]);
+                    }
                 }
                 out.flush();
                 out.close();
