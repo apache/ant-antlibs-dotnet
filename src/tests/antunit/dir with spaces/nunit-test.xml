@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one or more
+  contributor license agreements.  See the NOTICE file distributed with
+  this work for additional information regarding copyright ownership.
+  The ASF licenses this file to You under the Apache License, Version 2.0
+  (the "License"); you may not use this file except in compliance with
+  the License.  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<project name="nant in dir with spaces" basedir="."
+  xmlns:au="antlib:org.apache.ant.antunit"
+  xmlns:dn="antlib:org.apache.ant.dotnet">
+
+  <property name="source.dir" location="src"/>
+  <property name="dest.dir" location="dest"/>
+
+  <import file="../augment-path.xml"/>
+  <condition property="nunit.found">
+    <or>
+      <available file="nunit-console.exe" filepath="${augmented.PATH}"/>
+      <available file="nunit-console.exe"/>
+    </or>
+  </condition>
+
+  <target name="setUp">
+    <mkdir dir="${source.dir}"/>
+    <mkdir dir="${dest.dir}"/>
+    <copy todir="${source.dir}">
+      <fileset dir="../nunit/src" includes="pass.cs"/>
+    </copy>
+  </target>
+
+  <target name="tearDown">
+    <delete dir="${source.dir}"/>
+    <delete dir="${dest.dir}"/>
+  </target>
+
+  <target name="find-NUnit" if="nunit.found">
+    <whichresource resource="/nunit.framework.dll" property="nunit"
+      classpath="${augmented.PATH}"/>
+  </target>
+
+  <target name="extract-NUnit" depends="find-NUnit" if="nunit">
+    <pathconvert property="nunit.framework.dll">
+      <map from="file:///" to="/"/>
+      <map from="file:/" to=""/>
+      <url url="${nunit}"/>
+    </pathconvert>
+  </target>
+
+  <target name="compile-pass" if="nunit" depends="extract-NUnit">
+    <dn:csc destFile="${dest.dir}/Pass.dll"
+      targetType="library" references="${nunit.framework.dll}">
+      <src dir="${source.dir}" includes="pass.cs"/>
+    </dn:csc>
+  </target>
+
+  <target name="test-passing" depends="compile-pass" if="nunit.found">
+    <dn:nunit errorProperty="nunit.failed">
+      <testassembly name="${dest.dir}/Pass.dll"/>
+    </dn:nunit>
+  </target>
+</project>
