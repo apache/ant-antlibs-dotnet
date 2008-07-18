@@ -38,6 +38,10 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="fix">
+        CSC of .NET 3.5 doesn't support the /incremental argument
+        anymore, only set /incremental+, but never /incremental-.
+      </action>
       <action type="fix" issue="41387">
         The compilation tasks failed if the source files resided in a
         directory with spaces in its full path and a response file was

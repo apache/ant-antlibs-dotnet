@@ -359,7 +359,9 @@ public class CSharp extends DotnetCompile {
         command.addArgument(getDocFileParameter());
         command.addArgument(getFullPathsParameter());
         command.addArgument(getFileAlignParameter());
-        command.addArgument(getIncrementalParameter());
+        if (getIncremental()) {
+            command.addArgument(getIncrementalParameter());
+        }
         command.addArgument(getNoConfigParameter());
         command.addArgument(getUnsafeParameter());
     }
