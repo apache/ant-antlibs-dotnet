@@ -32,7 +32,9 @@ import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.io.BufferedOutputStream;
+import java.util.ArrayList;
 import java.util.Hashtable;
+import java.util.List;
 
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Project;
@@ -51,7 +53,6 @@ import org.apache.tools.ant.types.Commandline;
  *  setting the path to point to the dotnet bin directory; in which case the
  *  shared code should go in here.
  *
- *@version    0.5
  */
 
 public class NetCommand {
@@ -113,6 +114,13 @@ public class NetCommand {
      * internal threshold for auto-switch
      */
     private int automaticResponseFileThreshold = 64;
+
+    /**
+     * List of command line arguments that must appear on the command
+     * line and must not go into a response file.
+     * @since .NET Antlib 1.1
+     */
+    private List argsOnCommandLine = new ArrayList();
 
     /**
      *  constructor
@@ -194,24 +202,45 @@ public class NetCommand {
      *  add an argument to a command line; do nothing if the arg is null or
      *  empty string
      *
-     *@param  argument  The feature to be added to the Argument attribute
+     * <p>The given argument may be added to a response file.</p>
+     *
+     * @param  argument  The feature to be added to the Argument attribute
      */
     public void addArgument(String argument) {
+        addArgument(argument, true);
+    }
+
+    /**
+     * add an argument to a command line; do nothing if the arg is
+     * null or empty string
+     *
+     * @param argument  The feature to be added to the Argument attribute
+     * @param mayBeInResponseFile whether the argument is allowed
+     * inside a response file.
+     *
+     * @since .NET Antlib 1.1
+     */
+    public void addArgument(String argument, boolean mayBeInResponseFile) {
         if (argument != null && argument.length() != 0) {
             commandLine.createArgument().setValue(argument);
+            if (!mayBeInResponseFile) {
+                argsOnCommandLine.add(argument);
+            }
         }
     }
 
     /**
-     *  add an argument to a command line; do nothing if the arg is null or
-     *  empty string
+     * Add multiple arguments to a command line; do nothing for args
+     * that are is null or empty strings
      *
-     *@param  arguments  The features to be added to the Argument attribute
+     * <p>The given arguments may be added to a response file.</p>
+     *
+     * @param  arguments  The features to be added to the Argument attribute
      */
     public void addArguments(String[] arguments) {
         if (arguments != null && arguments.length != 0) {
             for (int i = 0; i < arguments.length; i++) {
-                addArgument(arguments[i]);
+                addArgument(arguments[i], true);
             }
         }
     }
@@ -220,12 +249,14 @@ public class NetCommand {
      *  concatenate two strings together and add them as a single argument,
      *  but only if argument2 is non-null and non-zero length
      *
+     * <p>The resulting argument may be added to a response file.</p>
+     *
      *@param  argument1  The first argument
      *@param  argument2  The second argument
      */
     public void addArgument(String argument1, String argument2) {
         if (argument2 != null && argument2.length() != 0) {
-            commandLine.createArgument().setValue(argument1 + argument2);
+            addArgument(argument1 + argument2, true);
         }
     }
 
@@ -351,6 +382,9 @@ public class NetCommand {
                 PrintWriter out = new PrintWriter(new BufferedOutputStream(fos));
                 //start at 1 because element 0 is the executable name
                 for (int i = 1; i < commands.length; ++i) {
+                    if (argsOnCommandLine.contains(commands[i])) {
+                        continue;
+                    }
                     if (commands[i].indexOf(" ") > -1) {
                         String q = commands[i].indexOf("\"") > -1 ? "'" : "\"";
                         out.print(q);
@@ -366,9 +400,14 @@ public class NetCommand {
                 throw new BuildException("saving command stream to " + temporaryCommandFile, ex);
             }
 
-            String newCommandLine[] = new String[2];
+            String newCommandLine[] = new String[2 + argsOnCommandLine.size()];
             newCommandLine[0] = commands[0];
-            newCommandLine[1] = "@" + temporaryCommandFile.getAbsolutePath();
+            if (argsOnCommandLine.size() > 0) {
+                System.arraycopy(argsOnCommandLine.toArray(), 0,
+                                 newCommandLine, 1, argsOnCommandLine.size());
+            }
+            newCommandLine[newCommandLine.length - 1] =
+                "@" + temporaryCommandFile.getAbsolutePath();
             logVerbose(Commandline.describeCommand(newCommandLine));
             executable.setCommandline(newCommandLine);
         }

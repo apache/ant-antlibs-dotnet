@@ -38,6 +38,9 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="fix" issue="34992">
+        The /noconfig argument must be used outside of a response file.
+      </action>
       <action type="fix">
         CSC of .NET 3.5 doesn't support the /incremental argument
         anymore, only set /incremental+, but never /incremental-.

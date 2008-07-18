@@ -78,5 +78,13 @@
     <dn:dotnetexec executable="${testCSC.exe}" failonerror="true" />
   </target>
 
+  <target name="testCSCNoConfig" depends="validate_csc">
+    <dn:csc noconfig="true" useresponsefile="true"
+      destFile="${testCSC.exe}"
+      targetType="exe">
+      <src dir="${src.dir}" includes="ex*.cs"/>
+    </dn:csc>
+    <au:assertLogContains text="/noconfig" level="verbose"/>
+  </target>
 </project>
 

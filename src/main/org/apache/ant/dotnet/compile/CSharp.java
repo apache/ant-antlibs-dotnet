@@ -362,7 +362,7 @@ public class CSharp extends DotnetCompile {
         if (getIncremental()) {
             command.addArgument(getIncrementalParameter());
         }
-        command.addArgument(getNoConfigParameter());
+        command.addArgument(getNoConfigParameter(), false);
         command.addArgument(getUnsafeParameter());
     }
 
