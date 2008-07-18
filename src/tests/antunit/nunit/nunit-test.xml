@@ -87,7 +87,7 @@
     </au:expectfailure>
   </target>
 
-  <target name="test-failing-errorproperty" depends="compile-fail">
+  <target name="test-failing-errorproperty" depends="compile-fail" if="nunit.found">
     <dn:nunit errorProperty="nunit.failed">
       <testassembly name="${build.dir}/Fail.dll"/>
     </dn:nunit>
