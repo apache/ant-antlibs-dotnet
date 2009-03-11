@@ -38,6 +38,10 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="fix">
+        The include and exclude arguments to NUnit were broken (they
+        had a leading ",").
+      </action>
       <action type="fix" issue="34992">
         The /noconfig argument must be used outside of a response file.
       </action>

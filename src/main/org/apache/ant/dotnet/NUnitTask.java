@@ -308,7 +308,7 @@ public class NUnitTask extends Task {
         if (includes.size() > 0) {
             StringBuffer sb = new StringBuffer("/include=");
             iter = includes.iterator();
-            boolean first = false;
+            boolean first = true;
             while (iter.hasNext()) {
                 if (first) {
                     first = false;
@@ -323,7 +323,7 @@ public class NUnitTask extends Task {
         if (excludes.size() > 0) {
             StringBuffer sb = new StringBuffer("/exclude=");
             iter = excludes.iterator();
-            boolean first = false;
+            boolean first = true;
             while (iter.hasNext()) {
                 if (first) {
                     first = false;
