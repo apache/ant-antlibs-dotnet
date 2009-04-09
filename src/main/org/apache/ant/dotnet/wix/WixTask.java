@@ -23,6 +23,7 @@ import org.apache.ant.dotnet.build.AbstractBuildTask;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.DirectoryScanner;
 import org.apache.tools.ant.Task;
+import org.apache.tools.ant.types.Commandline;
 import org.apache.tools.ant.types.EnumeratedAttribute;
 import org.apache.tools.ant.types.FileSet;
 
@@ -84,9 +85,24 @@ public class WixTask extends Task {
     private File wixobjDestDir = null;
 
     /**
+     * addtional command line arguments for candle.
+     */
+    private Commandline candleCmdl = new Commandline();
+
+    /**
      * list of parameters for the preprocessor.
      */
-    private ArrayList parameters = new ArrayList();
+    private ArrayList candleParameters = new ArrayList();
+
+    /**
+     * addtional command line arguments for light.
+     */
+    private Commandline lightCmdl = new Commandline();
+
+    /**
+     * list of parameters for the "compiler".
+     */
+    private ArrayList lightParameters = new ArrayList();
 
     public WixTask() {
         super();
@@ -172,7 +188,32 @@ public class WixTask extends Task {
      * A parameter to pass to candle.exe.
      */
     public final void addCandleParameter(AbstractBuildTask.Property t) {
-        parameters.add(t);
+        candleParameters.add(t);
+    }
+
+    /**
+     * A parameter to pass to light.exe.
+     */
+    public final void addLightParameter(AbstractBuildTask.Property t) {
+        lightParameters.add(t);
+    }
+
+    /**
+     * Adds a command-line argument for light.exe.
+     *
+     * @return new command line argument created.
+     */
+    public Commandline.Argument createLightArg() {
+        return lightCmdl.createArgument();
+    }
+
+    /**
+     * Adds a command-line argument for candle.exe.
+     *
+     * @return new command line argument created.
+     */
+    public Commandline.Argument createCandleArg() {
+        return candleCmdl.createArgument();
     }
 
     public void execute() {
@@ -270,14 +311,16 @@ public class WixTask extends Task {
      * Run candle passing all files of the collection on the command line.
      */
     private void runCandle(Collection s) {
-        run(wixExecutable("candle.exe"), s, null, wixobjDestDir, parameters);
+        run(wixExecutable("candle.exe"), s, null, wixobjDestDir,
+            candleParameters, candleCmdl);
     }
 
     /**
      * Run light passing all files of the collection on the command line.
      */
     private void runLight(Collection s) {
-        run(wixExecutable("light.exe"), s, target, null, Collections.EMPTY_LIST);
+        run(wixExecutable("light.exe"), s, target, null,
+            lightParameters, lightCmdl);
     }
 
     /**
@@ -294,7 +337,7 @@ public class WixTask extends Task {
      * on the command line - potentially adding an /out parameter.
      */
     private void run(String executable, Collection s, File target,
-                     File runInDir, Collection params) {
+                     File runInDir, Collection params, Commandline cmdl) {
         DotNetExecTask exec = DotNetExecTask.getTask(this, vm, 
                                                      executable, null);
         if (runInDir != null) {
@@ -315,12 +358,16 @@ public class WixTask extends Task {
             exec.createArg().setValue("/out");
             exec.createArg().setValue(target.getAbsolutePath());
         }
-        
+
         iter = params.iterator();
         while (iter.hasNext()) {
             AbstractBuildTask.Property p =
                 (AbstractBuildTask.Property) iter.next();
             exec.createArg().setValue("-d" + p.getName() + "=" + p.getValue());
+        }
+        String[] extraArgs = cmdl.getArguments();
+        for (int i = 0; i < extraArgs.length; i++) {
+            exec.createArg().setValue(extraArgs[i]);
         }
 
         exec.execute();
