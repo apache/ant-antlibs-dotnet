@@ -1,0 +1,113 @@
+<!--
+  Licensed to the Apache Software Foundation (ASF) under one
+  or more contributor license agreements.  See the NOTICE file
+  distributed with this work for additional information
+  regarding copyright ownership.  The ASF licenses this file
+  to you under the Apache License, Version 2.0 (the
+  "License"); you may not use this file except in compliance
+  with the License.  You may obtain a copy of the License at
+ 
+  http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing,
+  software distributed under the License is distributed on an
+  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+  KIND, either express or implied.  See the License for the
+  specific language governing permissions and limitations
+  under the License.
+-->
+<html>
+  <head>
+    <meta http-equiv="Content-Language" content="en-us"></meta>
+    <link rel="stylesheet" type="text/css" href="style.css">
+    <title>Tallow Task</title>
+  </head>
+
+  <body>
+    <h2>tallow</h2>
+
+    <h3>Description</h3>
+
+    <p>Runs tallow from the <a
+    href="http://sourceforge.net/projects/wix">Wix</a> toolset
+    </p>
+
+    <h3>Parameters</h3>
+    <table border="1" cellpadding="2" cellspacing="0">
+      <tr>
+        <td valign="top"><b>Attribute</b></td>
+        <td valign="top"><b>Description</b></td>
+        <td align="center" valign="top"><b>Required</b></td>
+      </tr>
+      <tr>
+        <td valign="top">source</td>
+        <td valign="top">The single source directory to process.</td>
+        <td align="center">Either this or at least one nested
+        &lt;sources&gt; set.</td>
+      </tr>
+      <tr>
+        <td valign="top">target</td>
+        <td valign="top">The expected target file.</td>
+        <td align="center">Yes</td>
+      </tr>
+      <tr>
+        <td valign="top">vm</td>
+        <td valign="top">Same as <a
+            href="dotnetexec.html">dotnetexec</a>'s vm attribute.
+          Specify the framework to use.</td>
+        <td align="center">No.</td>
+      </tr>
+      <tr>
+        <td valign="top">wixHome</td>
+        <td valign="top">Installation directory of WiX.</td>
+        <td align="center">No - Ant will assume WiX is on your PATH
+        otherwise.</td>
+      </tr>
+    </table>
+
+    <h3>Parameters specified as nested elements</h3>
+
+    <h4>sources</h4>
+
+    <p>Specify source directories that shall be passed on the command line.
+    This is a <a
+    href="http://ant.apache.org/manual/CoreTypes/dirset.html">dirset</a>.</p>
+
+    <h4>arg</h4>
+
+    <p>Specifies additional arguments for talow</p>
+
+    <p><code>arg</code> is
+      a <a href="http://ant.apache.org/manual/using.html#arg">command
+        line argument</a>.</p>
+
+    <h3>Examples</h3>
+
+    <p>Create <code>product.wxs</code> from <code>product</code> directory:</p>
+
+    <pre>
+      &lt;tallow source="product" target="product.wxs"/&gt;
+    </pre>
+
+    <p>Create <code>product.wxs</code> from <code>bin</code>,<code>docs</code>,
+    and <code>conf</code> under <code>product</code> directory:</p>
+
+    <pre>
+      &lt;tallow target="bin.wxs"/&gt;
+        &lt;sources dir="product", includes="bin,docs,conf"/&gt;
+      &lt;/tallow&gt;
+    </pre>
+
+    <p>Create <code>product.wxs</code> from <code>bin</code>,<code>docs</code>,
+    and <code>conf</code> under <code>product</code> directory:, and
+    set all files <code>vital</code>
+    </p>
+
+    <pre>
+      &lt;tallow target="bin.wxs"/&gt;
+        &lt;sources dir="product", includes="bin,docs,conf"/&gt;
+        &lt;arg value="-dav"/&gt;
+      &lt;/tallow&gt;
+    </pre>
+  </body>
+</html>

@@ -38,6 +38,10 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="add" issue="47078">
+        A new tallow task has been added to ease creation of WiX built
+        installers.
+      </action>
       <action type="update" issue="46968">
         The wix task has new nested elements that allow users to send
         addtional command line arguments to candle and light.
