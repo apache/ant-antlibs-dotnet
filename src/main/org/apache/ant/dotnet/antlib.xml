@@ -33,6 +33,10 @@
     classname="org.apache.ant.dotnet.wix.WixTask"
     />
   <taskdef
+    name="tallow"
+    classname="org.apache.ant.dotnet.wix.TallowTask"
+    />
+  <taskdef
     name="nunit"
     classname="org.apache.ant.dotnet.NUnitTask"
     />
