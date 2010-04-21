@@ -38,6 +38,9 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="add">
+        A new F# compiler task has been added.
+      </action>
       <action type="add" issue="47078">
         A new tallow task has been added to ease creation of WiX built
         installers.

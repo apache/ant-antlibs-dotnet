@@ -61,4 +61,7 @@
   <taskdef
     name="importtypelib"
     classname="org.apache.ant.dotnet.ImportTypelib"/>
+  <taskdef
+    name="fsc"
+    classname="org.apache.ant.dotnet.compile.FSharp"/>
 </antlib>
