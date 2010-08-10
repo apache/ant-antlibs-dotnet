@@ -64,16 +64,16 @@
    <echo> jsharp.found=${jsharp.found}</echo>
 
    <!-- Mono C# compiler -->
-   <condition property="mcs.found">
-      <available file="mcs"     filepath="${env.PATH}" />
+   <condition property="gmcs.found">
+      <available file="gmcs"     filepath="${env.PATH}" />
     </condition>
-   <echo> mcs.found=${mcs.found}</echo>
+   <echo> gmcs.found=${gmcs.found}</echo>
 
    <!-- any C# compiler -->
    <condition property="c#.found">
       <or>
         <isset property="csc.found"/>
-        <isset property="mcs.found"/>
+        <isset property="gmcs.found"/>
       </or>
    </condition>
 
@@ -95,7 +95,7 @@
    <condition property="dotnetapps.found">
       <or>
         <and>
-          <isset property="mcs.found"/>
+          <isset property="gmcs.found"/>
           <isset property="mono.ilasm.found"/>
         </and>
         <and>
@@ -120,8 +120,8 @@
       <isset property="csc.found"/>
    </condition>
 
-   <condition property="cs.compiler" value="mcs">
-      <isset property="mcs.found"/>
+   <condition property="cs.compiler" value="gmcs">
+      <isset property="gmcs.found"/>
    </condition>
 
     <condition property="ms.net20+">
@@ -169,7 +169,7 @@
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="CSC-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSC-Mono" depends="validate_csc" if="gmcs.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe" />
     <dn:csc
@@ -215,7 +215,7 @@
     <delete file="${testCSCRes.exe}"/>
   </target>
 
-  <target name="CSCResources-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCResources-Mono" depends="validate_csc" if="gmcs.found">
     <property name="testCSCRes.exe"
       location="${build.dir}/ExampleCscRes.exe" />
     <dn:csc
@@ -251,7 +251,7 @@
     <delete file="${testCSC.exe}"/>
   </target>
 
-  <target name="CSCintrinsicFileset-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCintrinsicFileset-Mono" depends="validate_csc" if="gmcs.found">
     <property name="testCSC.exe"
       location="${build.dir}/ExampleCsc.exe"/>
     <dn:csc
@@ -295,7 +295,7 @@
     <au:assertFileExists file="${testCSC2.dll}"/>
   </target>
 
-  <target name="CSCdll-Mono" depends="validate_csc" if="mcs.found">
+  <target name="CSCdll-Mono" depends="validate_csc" if="gmcs.found">
     <property name="testCSC.dll"
       location="${build.dir}/Example2.dll" />
     <dn:csc
@@ -332,7 +332,7 @@
   </target>
 
   <target name="CscReferences-Mono" depends="validate_csc,CSCdll-Mono"
-          if="mcs.found">
+          if="gmcs.found">
     <property name="testCscReferences.exe"
       location="${build.dir}/ExampleCsc2.exe" />
     <dn:csc

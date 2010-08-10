@@ -40,7 +40,7 @@ import java.io.File;
 /**
  *  Compiles C# source into executables or modules.
  *
- * csc.exe on Windows or mcs on other platforms must be on the execute
+ * csc.exe on Windows or gmcs on other platforms must be on the execute
  * path, unless another executable or the full path to that executable
  * is specified in the <tt>executable</tt> parameter
  * <p>
@@ -102,6 +102,8 @@ import java.io.File;
 
 public class CSharp extends DotnetCompile {
 
+    private static final String MONO_CS_COMPILER = "gmcs";
+
     /**
      *  defines list: RELEASE;WIN32;NO_SANITY_CHECKS;;SOMETHING_ELSE'
      */
@@ -160,7 +162,7 @@ public class CSharp extends DotnetCompile {
         unsafe = false;
         noconfig = false;
         definitions = null;
-        setExecutable(isWindows ? "csc" : "mcs");
+        setExecutable(isWindows ? "csc" : MONO_CS_COMPILER);
     }
 
 
@@ -203,7 +205,7 @@ public class CSharp extends DotnetCompile {
      *@return    The OutputFile Parameter to CSC
      */
     protected String getFileAlignParameter() {
-        if (fileAlign != 0 && !"mcs".equals(getExecutable())) {
+        if (fileAlign != 0 && !MONO_CS_COMPILER.equals(getExecutable())) {
             return "/filealign:" + fileAlign;
         } else {
             return null;

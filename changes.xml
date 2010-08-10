@@ -38,6 +38,9 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="update" breaks-bwc="true">
+        The C# compiler uses gmcs on Mono by default now.
+      </action>
       <action type="add">
         A new F# compiler task has been added.
       </action>

@@ -56,7 +56,7 @@
    <echo> wsdl.found=${wsdl.found}</echo>
    <condition property="csc.found">
       <or>
-        <available file="mcs"     filepath="${env.PATH}" />
+        <available file="gmcs"     filepath="${env.PATH}" />
         <available file="csc"     filepath="${env.PATH}" />
         <available file="csc.exe" filepath="${env.PATH}" />
         <available file="csc.exe" filepath="${env.Path}" />
@@ -80,7 +80,7 @@
    <echo> dotnetapps.found=${dotnetapps.found}</echo>
    <condition property="is.mono">
       <and>
-        <available file="mcs"     filepath="${env.PATH}" />
+        <available file="gmcs"     filepath="${env.PATH}" />
         <not>
           <available file="csc.exe"     filepath="${env.PATH}" />
         </not>
