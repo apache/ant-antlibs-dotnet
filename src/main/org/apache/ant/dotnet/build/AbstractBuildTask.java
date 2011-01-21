@@ -126,6 +126,9 @@ public abstract class AbstractBuildTask extends Task {
             return name;
         }
 
+        public String toString() {
+            return getName();
+        }
     }
 
     /**
@@ -158,6 +161,10 @@ public abstract class AbstractBuildTask extends Task {
 
         public String getValue() {
             return value;
+        }
+
+        public String toString() {
+            return getName() + "=" + getValue();
         }
     }
 

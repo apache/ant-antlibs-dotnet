@@ -52,7 +52,7 @@
         The wix task has new nested elements that allow users to send
         addtional command line arguments to candle and light.
       </action>
-      <action type="fix">
+      <action type="fix" issue="50611">
         The include and exclude arguments to NUnit were broken (they
         had a leading ",").
       </action>

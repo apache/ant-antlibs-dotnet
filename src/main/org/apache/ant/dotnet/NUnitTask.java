@@ -18,6 +18,7 @@
 
 package org.apache.ant.dotnet;
 
+import org.apache.ant.dotnet.util.CollectionUtils;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Environment;
@@ -307,32 +308,12 @@ public class NUnitTask extends Task {
         
         if (includes.size() > 0) {
             StringBuffer sb = new StringBuffer("/include=");
-            iter = includes.iterator();
-            boolean first = true;
-            while (iter.hasNext()) {
-                if (first) {
-                    first = false;
-                } else {
-                    sb.append(",");
-                }
-                NamedElement a = (NamedElement) iter.next();
-                sb.append(a.getName());
-            }
+            sb.append(CollectionUtils.flattenToString(includes));
             exec.createArg().setValue(sb.toString());
         }
         if (excludes.size() > 0) {
             StringBuffer sb = new StringBuffer("/exclude=");
-            iter = excludes.iterator();
-            boolean first = true;
-            while (iter.hasNext()) {
-                if (first) {
-                    first = false;
-                } else {
-                    sb.append(",");
-                }
-                NamedElement a = (NamedElement) iter.next();
-                sb.append(a.getName());
-            }
+            sb.append(CollectionUtils.flattenToString(excludes));
             exec.createArg().setValue(sb.toString());
         }
 
@@ -349,5 +330,6 @@ public class NUnitTask extends Task {
         private String name;
         public String getName() {return name;}
         public void setName(String s) {name = s;}
+        public String toString() {return getName();}
     }
 }

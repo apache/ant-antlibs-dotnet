@@ -19,8 +19,9 @@
 package org.apache.ant.dotnet.build;
 
 import java.io.File;
-import java.util.Iterator;
 import java.util.List;
+
+import org.apache.ant.dotnet.util.CollectionUtils;
 
 import org.w3c.dom.DocumentFragment;
 import org.w3c.dom.Element;
@@ -58,18 +59,7 @@ public class MSBuildTask extends AbstractBuildTask {
     protected String[] getTargetArguments(List targets) {
         if (targets.size() > 0) {
             StringBuffer sb = new StringBuffer("/target:");
-            Iterator iter = targets.iterator();
-            boolean first = true;
-            while (iter.hasNext()) {
-                AbstractBuildTask.Target t = 
-                    (AbstractBuildTask.Target) iter.next();
-                if (!first) {
-                    sb.append(";");
-                } else {
-                    first = false;
-                }
-                sb.append(t.getName());
-            }
+            sb.append(CollectionUtils.flattenToString(targets, ";"));
             return new String[]{sb.toString()};
         } else {
             return new String[0];
@@ -79,18 +69,7 @@ public class MSBuildTask extends AbstractBuildTask {
     protected String[] getPropertyArguments(List properties) {
         if (properties.size() > 0) {
             StringBuffer sb = new StringBuffer("/property:");
-            Iterator iter = properties.iterator();
-            boolean first = true;
-            while (iter.hasNext()) {
-                AbstractBuildTask.Property p = 
-                    (AbstractBuildTask.Property) iter.next();
-                if (!first) {
-                    sb.append(";");
-                } else {
-                    first = false;
-                }
-                sb.append(p.getName()).append("=").append(p.getValue());
-            }
+            sb.append(CollectionUtils.flattenToString(properties, ";"));
             return new String[]{sb.toString()};
         } else {
             return new String[0];
