@@ -104,6 +104,11 @@ public class WixTask extends Task {
      */
     private ArrayList lightParameters = new ArrayList();
 
+    /**
+     * Whether to use lit.exe rather than light.exe.
+     */
+    private boolean useLit = false;
+
     public WixTask() {
         super();
     }
@@ -216,6 +221,15 @@ public class WixTask extends Task {
         return candleCmdl.createArgument();
     }
 
+    /**
+     * Instructs the task to use lit.exe rather than light.exe as "compiler".
+     *
+     * @since .NET Antlib 1.1
+     */
+    public void setUseLit(boolean b) {
+        useLit = b;
+    }
+
     public void execute() {
         if (source == null && sources.size() == 0) {
             throw new BuildException("You must specify at least one source"
@@ -319,7 +333,7 @@ public class WixTask extends Task {
      * Run light passing all files of the collection on the command line.
      */
     private void runLight(Collection s) {
-        run(wixExecutable("light.exe"), s, target, null,
+        run(wixExecutable(useLit ? "lit.exe" : "light.exe"), s, target, null,
             lightParameters, lightCmdl);
     }
 

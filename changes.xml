@@ -38,6 +38,10 @@
     </properties>
 
     <release version="SVN trunk" date="unpublished">
+      <action type="add" issue="47254">
+        The wix task has an option to run lit.exe rather than
+        light.exe now.
+      </action>
       <action type="update" breaks-bwc="true">
         The C# compiler uses gmcs on Mono by default now.
       </action>
