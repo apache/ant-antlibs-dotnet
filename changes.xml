@@ -37,7 +37,7 @@
       <title>Apache .NET Ant Library</title>
     </properties>
 
-    <release version="1.1" date="2011-02-03">
+    <release version="1.1" date="2011-02-04">
       <action type="add" issue="47254">
         The wix task has an option to run lit.exe rather than
         light.exe now.
