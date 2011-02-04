@@ -36,6 +36,13 @@
     <category rdf:resource="http://projects.apache.org/category/build-management" />
     <release>
       <Version>
+        <name>Apache .NET Ant Library 1.1</name>
+        <created>2011-02-04</created>
+        <revision>1.1</revision>
+      </Version>
+    </release>
+    <release>
+      <Version>
         <name>Apache .NET Ant Library 1.0</name>
         <created>2006-11-06</created>
         <revision>1.0</revision>
