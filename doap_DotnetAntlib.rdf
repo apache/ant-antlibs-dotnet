@@ -49,10 +49,10 @@
       </Version>
     </release>
     <repository>
-      <SVNRepository>
-        <location rdf:resource="http://svn.apache.org/repos/asf/ant/antlibs/dotnet"/>
-        <browse rdf:resource="http://svn.apache.org/viewcvs.cgi/ant/antlibs/dotnet"/>
-      </SVNRepository>
+      <GitRepository>
+        <location rdf:resource="https://git-wip-us.apache.org/repos/asf/ant-antlibs-dotnet.git"/>
+        <browse rdf:resource="https://git-wip-us.apache.org/repos/asf?p=ant-antlibs-dotnet.git"/>
+      </GitRepository>
     </repository>
   </Project>
 </rdf:RDF>
