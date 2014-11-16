@@ -40,7 +40,7 @@ import java.io.File;
 /**
  *  Compiles C# source into executables or modules.
  *
- * csc.exe on Windows or gmcs on other platforms must be on the execute
+ * csc.exe on Windows or dmcs on other platforms must be on the execute
  * path, unless another executable or the full path to that executable
  * is specified in the <tt>executable</tt> parameter
  * <p>
@@ -102,7 +102,7 @@ import java.io.File;
 
 public class CSharp extends DotnetCompile {
 
-    private static final String MONO_CS_COMPILER = "gmcs";
+    private static final String MONO_CS_COMPILER = "dmcs";
 
     /**
      *  defines list: RELEASE;WIN32;NO_SANITY_CHECKS;;SOMETHING_ELSE'

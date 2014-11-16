@@ -37,7 +37,12 @@
       <title>Apache .NET Ant Library</title>
     </properties>
 
-    <release version="SVN trunk" date="unpublished">
+    <release version="git master" date="unpublished">
+      <action type="update" issue="51970" breaks-bwc="true">
+        The &lt;csc&gt; task now uses dmcs rather than gmcs as default
+        on non-Windows systems.  The executable attribute of the task
+        can still be used to select the compiler explicitly.
+      </action>
     </release>
 
     <release version="1.1" date="2011-02-04">
