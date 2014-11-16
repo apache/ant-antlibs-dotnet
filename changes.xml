@@ -43,6 +43,10 @@
         on non-Windows systems.  The executable attribute of the task
         can still be used to select the compiler explicitly.
       </action>
+      <action type="add" issue="51023">
+        The &lt;nunit&gt; task has a new executable attribute that can
+        be used to override the name of the NUnit executable.
+      </action>
     </release>
 
     <release version="1.1" date="2011-02-04">

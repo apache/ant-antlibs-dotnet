@@ -118,12 +118,18 @@ public class NUnitTask extends Task {
     private String errorProperty;
 
     /**
+     *  executable
+     */
+    private String executable;
+
+    /**
      * Support for nested environment variables.
      */
     private Environment env = new Environment();
 
     public NUnitTask() {
         super();
+        executable = "nunit-console.exe";
     }
 
     /**
@@ -215,6 +221,21 @@ public class NUnitTask extends Task {
     }
 
     /**
+     * set the name of the program, overriding the defaults.
+     *
+     * <p>Can be used to set the full path to a program, or to switch
+     * to an alternate implementation of the command - e.g. using
+     * "nunit-console-x86.exe" to run the 32bit version on a 64bit
+     * system.</p>
+     *
+     * @param executable
+     * @since .NET Antlib 1.2
+     */
+    public void setExecutable(String executable) {
+        this.executable = executable;
+    }
+
+    /**
      * Adds a test assembly by name.
      */
     public void addTestAssembly(NamedElement a) {
@@ -266,7 +287,7 @@ public class NUnitTask extends Task {
         }
         
         DotNetExecTask exec = DotNetExecTask.getTask(this, vm, 
-                                                     "nunit-console.exe",
+                                                     executable,
                                                      env);
         Iterator iter = testAssemblies.iterator();
         while (iter.hasNext()) {
