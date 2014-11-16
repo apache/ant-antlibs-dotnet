@@ -128,7 +128,6 @@ public class NUnitTask extends Task {
     private Environment env = new Environment();
 
     public NUnitTask() {
-        super();
         executable = "nunit-console.exe";
     }
 
