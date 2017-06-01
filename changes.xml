@@ -38,6 +38,10 @@
     </properties>
 
     <release version="git master" date="unpublished">
+      <action type="update" breaks-bwc="true">
+        The coordinates inside the Ivy file have been changed to match
+        those of the POM.
+      </action>
       <action type="update" issue="51970" breaks-bwc="true">
         The &lt;csc&gt; task now uses dmcs rather than gmcs as default
         on non-Windows systems.  The executable attribute of the task
