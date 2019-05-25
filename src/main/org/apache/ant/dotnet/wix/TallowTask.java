@@ -36,7 +36,7 @@ import java.util.Set;
 /**
  * Task to run the tallow on packaging content to create a wxs file
  *
- * @see http://sf.net/projects/wix
+ * @see https://sf.net/projects/wix
  */
 public class TallowTask extends Task {
 
