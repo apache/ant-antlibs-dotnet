@@ -11,14 +11,14 @@ Learn more
 
 The documentation is included in the docs subdirectory of this
 distribution.  The home of this library is
-<http://ant.apache.org/antlibs/dotnet/index.html>.
+<https://ant.apache.org/antlibs/dotnet/index.html>.
 
 Building
 ========
 
 This Ant Library requires Ant 1.7.0 to build, the tests use the sister
 Antlib AntUnit (see
-<http://ant.apache.org/antlibs/antunit/index.html>).
+<https://ant.apache.org/antlibs/antunit/index.html>).
 
 It should work with any Java(TM) Runtime (and compile with any Java(TM)
 Developer Kit) starting with version 1.2.

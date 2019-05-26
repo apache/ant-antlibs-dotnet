@@ -31,7 +31,7 @@ import java.util.Iterator;
 /**
  * Task to run the NUnit Console test runner.
  *
- * @see http://www.nunit.org/
+ * @see https://www.nunit.org/
  */
 public class NUnitTask extends Task {
 

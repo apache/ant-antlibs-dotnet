@@ -39,7 +39,7 @@ import java.util.Set;
 /**
  * Task to run the WiX utility to create MSI files from an XML description.
  *
- * @see http://sf.net/projects/wix
+ * @see https://sf.net/projects/wix
  */
 public class WixTask extends Task {
 
